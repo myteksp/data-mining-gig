@@ -18,6 +18,50 @@
     "allPublicConstructors": true
   },
   {
+    "name": "com.datamatcher.server.controllers.DropboxController",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "authorize",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "download",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getAuthorizationUrl",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "listFolder",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "upload",
+        "parameterTypes": [
+          "java.lang.String",
+          "org.springframework.web.multipart.MultipartFile"
+        ]
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "com.datamatcher.server.services.DropboxService"
+        ]
+      }
+    ]
+  },
+  {
     "name": "com.datamatcher.server.controllers.UploadsController",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true,
@@ -86,10 +130,20 @@
       {
         "name": "<init>",
         "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
           "java.lang.String"
         ]
       }
     ]
+  },
+  {
+    "name": "com.datamatcher.server.repositories.DropBoxRepo$DropBoxEntity",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
   },
   {
     "name": "com.datamatcher.server.repositories.RecordsRepo",
@@ -147,6 +201,19 @@
       {
         "name": "<init>",
         "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.datamatcher.server.services.DropboxService",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "com.datamatcher.server.repositories.DropBoxRepo"
+        ]
       }
     ]
   },
@@ -10110,6 +10177,11 @@
     "name": "org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
   },
   {
     "name": "org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter",

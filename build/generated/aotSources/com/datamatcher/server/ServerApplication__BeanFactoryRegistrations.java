@@ -1,8 +1,10 @@
 package com.datamatcher.server;
 
+import com.datamatcher.server.controllers.DropboxController__BeanDefinitions;
 import com.datamatcher.server.controllers.UploadsController__BeanDefinitions;
 import com.datamatcher.server.repositories.DropBoxRepo__BeanDefinitions;
 import com.datamatcher.server.repositories.RecordsRepo__BeanDefinitions;
+import com.datamatcher.server.services.DropboxService__BeanDefinitions;
 import com.datamatcher.server.services.UploadService__BeanDefinitions;
 import org.springdoc.core.configuration.SpringDocConfiguration__BeanDefinitions;
 import org.springdoc.core.configuration.SpringDocUIConfiguration__BeanDefinitions;
@@ -84,9 +86,11 @@ public class ServerApplication__BeanFactoryRegistrations {
     beanFactory.registerBeanDefinition("org.springframework.context.event.internalEventListenerProcessor", EventListenerMethodProcessor__BeanDefinitions.getInternalEventListenerProcessorBeanDefinition());
     beanFactory.registerBeanDefinition("org.springframework.context.event.internalEventListenerFactory", DefaultEventListenerFactory__BeanDefinitions.getInternalEventListenerFactoryBeanDefinition());
     beanFactory.registerBeanDefinition("serverApplication", ServerApplication__BeanDefinitions.getServerApplicationBeanDefinition());
+    beanFactory.registerBeanDefinition("dropboxController", DropboxController__BeanDefinitions.getDropboxControllerBeanDefinition());
     beanFactory.registerBeanDefinition("uploadsController", UploadsController__BeanDefinitions.getUploadsControllerBeanDefinition());
     beanFactory.registerBeanDefinition("dropBoxRepo", DropBoxRepo__BeanDefinitions.getDropBoxRepoBeanDefinition());
     beanFactory.registerBeanDefinition("recordsRepo", RecordsRepo__BeanDefinitions.getRecordsRepoBeanDefinition());
+    beanFactory.registerBeanDefinition("dropboxService", DropboxService__BeanDefinitions.getDropboxServiceBeanDefinition());
     beanFactory.registerBeanDefinition("uploadService", UploadService__BeanDefinitions.getUploadServiceBeanDefinition());
     beanFactory.registerBeanDefinition("org.springframework.scheduling.annotation.ProxyAsyncConfiguration", ProxyAsyncConfiguration__BeanDefinitions.getProxyAsyncConfigurationBeanDefinition());
     beanFactory.registerBeanDefinition("org.springframework.context.annotation.internalAsyncAnnotationProcessor", ProxyAsyncConfiguration__BeanDefinitions.getInternalAsyncAnnotationProcessorBeanDefinition());

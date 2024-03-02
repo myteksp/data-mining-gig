@@ -15,8 +15,8 @@ public class DropBoxRepo__BeanDefinitions {
    * Get the bean instance supplier for 'dropBoxRepo'.
    */
   private static BeanInstanceSupplier<DropBoxRepo> getDropBoxRepoInstanceSupplier() {
-    return BeanInstanceSupplier.<DropBoxRepo>forConstructor(String.class)
-            .withGenerator((registeredBean, args) -> new DropBoxRepo(args.get(0)));
+    return BeanInstanceSupplier.<DropBoxRepo>forConstructor(String.class, String.class, String.class, String.class, String.class, String.class)
+            .withGenerator((registeredBean, args) -> new DropBoxRepo(args.get(0), args.get(1), args.get(2), args.get(3), args.get(4), args.get(5)));
   }
 
   /**
