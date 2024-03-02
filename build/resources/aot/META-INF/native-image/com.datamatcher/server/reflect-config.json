@@ -33,6 +33,15 @@
         ]
       },
       {
+        "name": "ingestFromDropBox",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.util.List",
+          "com.datamatcher.server.entities.DataType",
+          "boolean"
+        ]
+      },
+      {
         "name": "search",
         "parameterTypes": [
           "java.lang.String",
@@ -46,7 +55,7 @@
         ]
       },
       {
-        "name": "uploadCsv",
+        "name": "upload",
         "parameterTypes": [
           "org.springframework.web.multipart.MultipartFile",
           "java.util.List",
@@ -68,6 +77,19 @@
     "name": "com.datamatcher.server.entities.UploadResponse",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.datamatcher.server.repositories.DropBoxRepo",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      }
+    ]
   },
   {
     "name": "com.datamatcher.server.repositories.RecordsRepo",
@@ -136,7 +158,8 @@
       {
         "name": "<init>",
         "parameterTypes": [
-          "com.datamatcher.server.repositories.RecordsRepo"
+          "com.datamatcher.server.repositories.RecordsRepo",
+          "com.datamatcher.server.repositories.DropBoxRepo"
         ]
       }
     ]

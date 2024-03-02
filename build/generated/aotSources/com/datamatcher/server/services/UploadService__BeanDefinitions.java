@@ -1,5 +1,6 @@
 package com.datamatcher.server.services;
 
+import com.datamatcher.server.repositories.DropBoxRepo;
 import com.datamatcher.server.repositories.RecordsRepo;
 import org.springframework.aot.generate.Generated;
 import org.springframework.beans.factory.aot.BeanInstanceSupplier;
@@ -15,8 +16,8 @@ public class UploadService__BeanDefinitions {
    * Get the bean instance supplier for 'uploadService'.
    */
   private static BeanInstanceSupplier<UploadService> getUploadServiceInstanceSupplier() {
-    return BeanInstanceSupplier.<UploadService>forConstructor(RecordsRepo.class)
-            .withGenerator((registeredBean, args) -> new UploadService(args.get(0)));
+    return BeanInstanceSupplier.<UploadService>forConstructor(RecordsRepo.class, DropBoxRepo.class)
+            .withGenerator((registeredBean, args) -> new UploadService(args.get(0), args.get(1)));
   }
 
   /**

@@ -4,7 +4,52 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0611498c-bc9f-463c-80c7-3bbe40105c8e" name="Changes" comment="" />
+    <list default="true" id="0611498c-bc9f-463c-80c7-3bbe40105c8e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/build/generated/aotSources/com/datamatcher/server/repositories/DropBoxRepo__BeanDefinitions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/repositories/DropBoxRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/aot/com/datamatcher/server/ServerApplication__BeanFactoryRegistrations.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/aot/com/datamatcher/server/ServerApplication__BeanFactoryRegistrations.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/aot/com/datamatcher/server/services/UploadService__BeanDefinitions.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/aot/com/datamatcher/server/services/UploadService__BeanDefinitions.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/controllers/UploadsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/controllers/UploadsController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo$EnrichmentMethod.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo$EnrichmentMethod.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo$FilterType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo$FilterType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo$ListOfDataMappings.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo$ListOfDataMappings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/RecordsRepo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/services/UploadService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/services/UploadService$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/services/UploadService$MapPropertyExtractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/services/UploadService$MapPropertyExtractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/services/UploadService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/services/UploadService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/aotResources/META-INF/native-image/com.datamatcher/server/reflect-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/aotResources/META-INF/native-image/com.datamatcher/server/reflect-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/aotSources/com/datamatcher/server/ServerApplication__BeanFactoryRegistrations.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/aotSources/com/datamatcher/server/ServerApplication__BeanFactoryRegistrations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/aotSources/com/datamatcher/server/services/UploadService__BeanDefinitions.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/aotSources/com/datamatcher/server/services/UploadService__BeanDefinitions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/aot/META-INF/native-image/com.datamatcher/server/reflect-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/aot/META-INF/native-image/com.datamatcher/server/reflect-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/compileTransaction/stash-dir/RecordsRepo__BeanDefinitions.class.uniqueId2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/compileTransaction/stash-dir/UploadService__BeanDefinitions.class.uniqueId1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileAotJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/StringTransformer$1.class.uniqueId4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/StringTransformer.class.uniqueId2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/UploadService$1.class.uniqueId1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/UploadService$MapPropertyExtractor.class.uniqueId3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/UploadService.class.uniqueId0" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/UploadService.class.uniqueId0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/controllers/UploadsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/controllers/UploadsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/repositories/RecordsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/repositories/RecordsRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/services/UploadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/services/UploadService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,23 +68,30 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2ceBzpR2Fiwa1uYnP2ZTKkVAJ05" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/dmitry.paradny/Desktop/ItayBullShit&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "/Users/dmitry.paradny/Desktop/ItayBullShit",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="ServerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.datamatcher.server.ServerApplication" />
@@ -70,5 +122,8 @@
       <updated>1708462430388</updated>
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

@@ -21,6 +21,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	implementation 'org.neo4j.driver:neo4j-java-driver:5.17.0'
 	implementation 'org.apache.commons:commons-csv:1.10.0'
+	implementation 'com.dropbox.core:dropbox-core-sdk:6.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

@@ -4,6 +4,7 @@ import com.datamatcher.server.entities.DataMapping;
 import com.datamatcher.server.entities.DataRecord;
 import com.datamatcher.server.entities.DataType;
 import com.datamatcher.server.entities.UploadResponse;
+import com.datamatcher.server.repositories.DropBoxRepo;
 import com.datamatcher.server.repositories.RecordsRepo;
 import com.datamatcher.server.utils.JSON;
 import com.datamatcher.server.utils.Signature;
@@ -29,9 +30,12 @@ import java.util.*;
 public final class UploadService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final RecordsRepo repo;
+    private final DropBoxRepo dropBoxRepo;
     @Autowired
-    public UploadService(final RecordsRepo repo){
+    public UploadService(final RecordsRepo repo,
+                         final DropBoxRepo dropBoxRepo){
         this.repo = repo;
+        this.dropBoxRepo = dropBoxRepo;
     }
 
 
@@ -39,28 +43,31 @@ public final class UploadService {
         return repo.getMappings();
     }
 
-    public final UploadResponse upload(final DataType type_input,
-                                       final List<String> mappings,
-                                       final MultipartFile file,
-                                       final boolean withHeaders){
-        UploadResponse response = new UploadResponse(file.getOriginalFilename(), generateUploadId(type_input, mappings, file, withHeaders), DataMapping.parseMappings(mappings), type_input, false, 0, 0);
+    public final UploadResponse ingestFromDropBox(final DataType type_input,
+                                                  final List<String> mappings,
+                                                  final String path,
+                                                  final boolean withHeaders){
+        if (!dropBoxRepo.doesFileExists(path)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "File '" + path + "' is not found in dropbox.");
+        }
+        final UploadResponse response = new UploadResponse(path, generateUploadId(type_input, mappings, path, withHeaders), DataMapping.parseMappings(mappings), type_input, false, 0, 0);
         if (repo.getUploadById(response.uploadId) != null){
             throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED, "This file already uploaded.");
         }
-        final File tempFile;
-        try {
-            tempFile = File.createTempFile("up_" + response.uploadId, "tmp");
-        }catch (final Throwable cause){
-            logger.error("Failed to create tmp file.", cause);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create tmp file", cause);
-        }
-        tempFile.deleteOnExit();
-        try {
-            file.transferTo(tempFile);
-        }catch (final Throwable cause){
-            logger.error("Failed to save to tmp file.", cause);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save to tmp file", cause);
-        }
+        response.outOf = dropBoxRepo.getFileSize(path);
+        final Thread t = new Thread(()->{
+            final UploadResponse r = _upload(type_input, dropBoxRepo.getDropboxFile(path), withHeaders, response);
+            logger.info("File copied from dropbox. {}", JSON.toJson(r));
+        }, "DB_DOWNLOAD_" + path);
+        t.setPriority(Thread.MAX_PRIORITY);
+        t.start();
+        return response;
+    }
+    private final UploadResponse _upload(final DataType type_input,
+                                         final File tempFile,
+                                         final boolean withHeaders,
+                                         final UploadResponse initial_response){
+        UploadResponse response = initial_response;
         response.outOf = tempFile.length();
         response = repo.createUpload(response);
         repo.ensureIndexes(response.mappings);
@@ -85,6 +92,30 @@ public final class UploadService {
         thread.setPriority(Thread.MAX_PRIORITY);
         thread.start();
         return response;
+    }
+    public final UploadResponse upload(final DataType type_input,
+                                       final List<String> mappings,
+                                       final MultipartFile file,
+                                       final boolean withHeaders){
+        UploadResponse response = new UploadResponse(file.getOriginalFilename(), generateUploadId(type_input, mappings, file, withHeaders), DataMapping.parseMappings(mappings), type_input, false, 0, 0);
+        if (repo.getUploadById(response.uploadId) != null){
+            throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED, "This file already uploaded.");
+        }
+        final File tempFile;
+        try {
+            tempFile = File.createTempFile("up_" + response.uploadId, "tmp");
+        }catch (final Throwable cause){
+            logger.error("Failed to create tmp file.", cause);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create tmp file", cause);
+        }
+        tempFile.deleteOnExit();
+        try {
+            file.transferTo(tempFile);
+        }catch (final Throwable cause){
+            logger.error("Failed to save to tmp file.", cause);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save to tmp file", cause);
+        }
+        return _upload(type_input, tempFile, withHeaders, response);
     }
 
     public final UploadResponse getUploadById(final String id){
@@ -187,7 +218,7 @@ public final class UploadService {
 
         if (withHeader) {
             for (final CSVRecord csvRecord : csvParser) {
-                byteCounter += Arrays.stream(csvRecord.values()).mapToInt(r -> r.length() + 2).sum();
+                byteCounter += Arrays.stream(csvRecord.values()).mapToInt(String::length).sum();
                 final List<DataRecord> records = new ArrayList<>(csvRecord.size());
                 for (final DataMapping e : mappings) {
                     final String value;
@@ -224,6 +255,7 @@ public final class UploadService {
         }
         repo.updateUploadProgress(uploadId, file.length());
         repo.completeUploadProgress(uploadId);
+        try {csvParser.close();}catch (final Throwable ignored){}
         logger.info("Upload '{}' completed.", uploadId);
     }
 
@@ -260,6 +292,12 @@ public final class UploadService {
             return Signature.getSignature(List.of(type, mappings, file.getName(), withHeaders, file.getSize()));
         }
         return Signature.getSignature(List.of(type, mappings, file.getName(), withHeaders, file.getSize(), contentType));
+    }
+    private static final String generateUploadId(final DataType type,
+                                                 final List<String> mappings,
+                                                 final String path,
+                                                 final boolean withHeaders)  {
+        return Signature.getSignature(List.of(type, mappings, path, withHeaders));
     }
 
 

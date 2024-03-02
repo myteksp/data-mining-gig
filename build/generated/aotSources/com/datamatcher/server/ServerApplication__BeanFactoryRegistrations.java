@@ -1,6 +1,7 @@
 package com.datamatcher.server;
 
 import com.datamatcher.server.controllers.UploadsController__BeanDefinitions;
+import com.datamatcher.server.repositories.DropBoxRepo__BeanDefinitions;
 import com.datamatcher.server.repositories.RecordsRepo__BeanDefinitions;
 import com.datamatcher.server.services.UploadService__BeanDefinitions;
 import org.springdoc.core.configuration.SpringDocConfiguration__BeanDefinitions;
@@ -84,6 +85,7 @@ public class ServerApplication__BeanFactoryRegistrations {
     beanFactory.registerBeanDefinition("org.springframework.context.event.internalEventListenerFactory", DefaultEventListenerFactory__BeanDefinitions.getInternalEventListenerFactoryBeanDefinition());
     beanFactory.registerBeanDefinition("serverApplication", ServerApplication__BeanDefinitions.getServerApplicationBeanDefinition());
     beanFactory.registerBeanDefinition("uploadsController", UploadsController__BeanDefinitions.getUploadsControllerBeanDefinition());
+    beanFactory.registerBeanDefinition("dropBoxRepo", DropBoxRepo__BeanDefinitions.getDropBoxRepoBeanDefinition());
     beanFactory.registerBeanDefinition("recordsRepo", RecordsRepo__BeanDefinitions.getRecordsRepoBeanDefinition());
     beanFactory.registerBeanDefinition("uploadService", UploadService__BeanDefinitions.getUploadServiceBeanDefinition());
     beanFactory.registerBeanDefinition("org.springframework.scheduling.annotation.ProxyAsyncConfiguration", ProxyAsyncConfiguration__BeanDefinitions.getProxyAsyncConfigurationBeanDefinition());

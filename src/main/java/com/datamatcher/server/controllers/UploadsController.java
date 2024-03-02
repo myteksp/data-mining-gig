@@ -46,11 +46,22 @@ public class UploadsController {
 
     @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public final UploadResponse uploadCsv(@RequestPart("file") final MultipartFile file,
-                                          @RequestParam("mappings") final List<String> mappings,
-                                          @RequestParam(value = "type", defaultValue = "DEFAULT_CSV") final DataType type,
-                                          @RequestParam(value = "withHeader", defaultValue = "true") final boolean withHeader){
+    public final UploadResponse upload(@RequestPart("file") final MultipartFile file,
+                                       @RequestParam("mappings") final List<String> mappings,
+                                       @RequestParam(value = "type", defaultValue = "DEFAULT_CSV") final DataType type,
+                                       @RequestParam(value = "withHeader", defaultValue = "true") final boolean withHeader){
         final UploadResponse response = uploadService.upload(type, mappings, file, withHeader);
+        logger.info("Uploaded: '{}'.", response);
+        return response;
+    }
+
+    @PostMapping(value = "/ingestFromDropBox", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public final UploadResponse ingestFromDropBox(@RequestPart("path") final String path,
+                                                  @RequestParam("mappings") final List<String> mappings,
+                                                  @RequestParam(value = "type", defaultValue = "DEFAULT_CSV") final DataType type,
+                                                  @RequestParam(value = "withHeader", defaultValue = "true") final boolean withHeader){
+        final UploadResponse response = uploadService.ingestFromDropBox(type, mappings, path, withHeader);
         logger.info("Uploaded: '{}'.", response);
         return response;
     }
