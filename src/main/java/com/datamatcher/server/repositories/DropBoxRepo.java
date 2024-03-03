@@ -84,7 +84,7 @@ public final class DropBoxRepo {
                 final long expiresAt = node.get("expiresAt").asLong();
                 final String accessToken = node.get("accessToken").asString().trim();
                 final String refreshToken = node.get("refreshToken").asString().trim();
-                return new DbxCredential(accessToken.isBlank()?null:accessToken, expiresAt < 0?null:expiresAt, refreshToken.isBlank()?null:refreshToken, appKey);
+                return new DbxCredential(accessToken, expiresAt < 0?null:expiresAt, refreshToken.isBlank()?null:refreshToken, appKey);
             } catch (final Throwable cause) {
                 logger.error("Failed to load dropbox credentials", cause);
                 return null;
@@ -111,10 +111,19 @@ public final class DropBoxRepo {
             final Long expiresAt = authFinish.getExpiresAt();
             saveCredentials(accessToken, expiresAt, refreshToken);
             final DbxCredential credential = new DbxCredential(accessToken, expiresAt, refreshToken, appKey);
-            this._client = new DbxClientV2(config, credential);
+            final DbxClientV2 client = this._client = new DbxClientV2(config, credential);
+            logger.info("Dropbox connection test: " + client.check().user("test").getResult());
         }catch (final Throwable cause){
             logger.error("Auth failed: ", cause);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authenticate dropbox", cause);
+        }
+    }
+
+    public final boolean isConnected(){
+        try {
+            return getClient().check().user("test").getResult().equals("test");
+        }catch (final Throwable cause){
+            return false;
         }
     }
 
@@ -135,8 +144,9 @@ public final class DropBoxRepo {
                 logger.error("No dropbox credentials found.");
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Dropbox auth failed.");
             }
-            this._client = new DbxClientV2(config, credential);
-            return this._client;
+            final DbxClientV2 client = this._client = new DbxClientV2(config, credential);
+            logger.info("Dropbox connection test: " + client.check().user("test").getResult());
+            return client;
         }catch (final Throwable cause){
             logger.error("Dropbox auth failed.", cause);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Dropbox auth failed.", cause);

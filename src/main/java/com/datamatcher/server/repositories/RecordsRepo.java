@@ -149,7 +149,7 @@ public final class RecordsRepo {
                                                         final int limit){
         final String query = String.format("""
                 match (n%s)
-                where %s not n:ROW_SOURCE
+                where %s not n:ROW_SOURCE and not n:UploadTracking and not n:COLUMNS_ROOT_NODE and not n:COLUMNS_NODE
                 return n skip %d limit %d;
                 """, hasContent(recordType)?":" + recordType.trim():"",
                 buildFilter(filter, filterType),

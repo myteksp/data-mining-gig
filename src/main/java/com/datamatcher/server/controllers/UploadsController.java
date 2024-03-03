@@ -31,7 +31,7 @@ public class UploadsController {
                                                         @RequestParam(value = "filter", defaultValue = "") final String filter,
                                                         @RequestParam(value = "filterType", defaultValue = "NONE") final RecordsRepo.FilterType filterType,
                                                         @RequestParam(value = "enrichmentMethod", defaultValue = "NONE") final RecordsRepo.EnrichmentMethod enrichmentMethod,
-                                                        @RequestParam(value = "joinOn", required = false) final List<String> joinOn,
+                                                        @RequestParam(value = "joinOn", required = true) final List<String> joinOn,
                                                         @RequestParam(value = "maxDepth", defaultValue = "10") final int maxDepth,
                                                         @RequestParam(value = "skip", defaultValue = "0") final int skip,
                                                         @RequestParam(value = "limit", defaultValue = "100") final int limit){
@@ -46,7 +46,7 @@ public class UploadsController {
 
     @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public final UploadResponse upload(@RequestPart("file") final MultipartFile file,
+    public final UploadResponse upload(@RequestParam("file") final MultipartFile file,
                                        @RequestParam("mappings") final List<String> mappings,
                                        @RequestParam(value = "type", defaultValue = "DEFAULT_CSV") final DataType type,
                                        @RequestParam(value = "withHeader", defaultValue = "true") final boolean withHeader){

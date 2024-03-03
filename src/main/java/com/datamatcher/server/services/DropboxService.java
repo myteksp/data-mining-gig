@@ -18,6 +18,10 @@ public final class DropboxService {
         this.repo = repo;
     }
 
+
+    public final boolean isConnected(){
+        return repo.isConnected();
+    }
     public final void reauthorizeClient(final String code){
         repo.reauthorizeClient(code);
     }

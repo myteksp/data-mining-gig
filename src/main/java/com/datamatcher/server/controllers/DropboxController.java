@@ -1,26 +1,23 @@
 package com.datamatcher.server.controllers;
 
 
-import com.datamatcher.server.entities.DataType;
-import com.datamatcher.server.entities.UploadResponse;
 import com.datamatcher.server.repositories.DropBoxRepo;
 import com.datamatcher.server.services.DropboxService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/dropbox")
@@ -36,10 +33,18 @@ public final class DropboxController {
         return service.upload(path, file);
     }
 
-    @GetMapping(value = "/authorize", produces = MediaType.TEXT_PLAIN_VALUE)
-    public final String authorize(@RequestParam(value = "code") final String code){
+    @GetMapping(value = "/authorize")
+    public final RedirectView authorize(@RequestParam(value = "code") final String code){
         service.reauthorizeClient(code);
-        return "success";
+        final RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("http://localhost:8080");
+        return redirectView;
+    }
+
+
+    @GetMapping(value = "/connectionStatus", produces = MediaType.APPLICATION_JSON_VALUE)
+    public final Map<Object, Object> connectionStatus(){
+        return Map.of("isConnected", service.isConnected());
     }
 
     @GetMapping(value = "/getAuthorizationUrl", produces = MediaType.TEXT_PLAIN_VALUE)

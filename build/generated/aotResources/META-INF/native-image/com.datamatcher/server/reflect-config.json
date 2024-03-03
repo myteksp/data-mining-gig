@@ -29,6 +29,10 @@
         ]
       },
       {
+        "name": "connectionStatus",
+        "parameterTypes": [ ]
+      },
+      {
         "name": "download",
         "parameterTypes": [
           "java.lang.String"
@@ -754,13 +758,140 @@
     "name": "jakarta.inject.Qualifier"
   },
   {
+    "name": "jakarta.servlet.descriptor.JspConfigDescriptor",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getJspPropertyGroups",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTaglibs",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "jakarta.servlet.descriptor.JspPropertyGroupDescriptor",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getBuffer",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDefaultContentType",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDeferredSyntaxAllowedAsLiteral",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getElIgnored",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getErrorOnELNotFound",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getErrorOnUndeclaredNamespace",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getIncludeCodas",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getIncludePreludes",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getIsXml",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPageEncoding",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getScriptingInvalid",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTrimDirectiveWhitespaces",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUrlPatterns",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "jakarta.servlet.descriptor.TaglibDescriptor",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getTaglibLocation",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTaglibURI",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
     "name": "jakarta.servlet.Filter",
     "queryAllPublicMethods": true
+  },
+  {
+    "name": "jakarta.servlet.FilterRegistration",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getServletNameMappings",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUrlPatternMappings",
+        "parameterTypes": [ ]
+      }
+    ]
   },
   {
     "name": "jakarta.servlet.MultipartConfigElement",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "jakarta.servlet.Registration",
+    "methods": [
+      {
+        "name": "getClassName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getInitParameters",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setInitParameters",
+        "parameterTypes": [
+          "java.util.Map"
+        ]
+      }
+    ]
   },
   {
     "name": "jakarta.servlet.Servlet",
@@ -769,6 +900,220 @@
   {
     "name": "jakarta.servlet.ServletConfig",
     "queryAllPublicMethods": true
+  },
+  {
+    "name": "jakarta.servlet.ServletContext",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getAttributeNames",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getClassLoader",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getContextPath",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDefaultSessionTrackingModes",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEffectiveMajorVersion",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEffectiveMinorVersion",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEffectiveSessionTrackingModes",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getFilterRegistrations",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getInitParameterNames",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJspConfigDescriptor",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMajorVersion",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMinorVersion",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getRequestCharacterEncoding",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getResponseCharacterEncoding",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getServerInfo",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getServletContextName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getServletRegistrations",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSessionCookieConfig",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSessionTimeout",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getVirtualServerName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setRequestCharacterEncoding",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setResponseCharacterEncoding",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setSessionTimeout",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "setSessionTrackingModes",
+        "parameterTypes": [
+          "java.util.Set"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "jakarta.servlet.ServletRegistration",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getMappings",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getRunAsRole",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "jakarta.servlet.SessionCookieConfig",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getAttributes",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getComment",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDomain",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMaxAge",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPath",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isHttpOnly",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isSecure",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setComment",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setDomain",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setHttpOnly",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setMaxAge",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "setName",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setPath",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setSecure",
+        "parameterTypes": [
+          "boolean"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "jakarta.servlet.SessionTrackingMode",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
   },
   {
     "name": "java.io.Closeable",
@@ -793,6 +1138,9 @@
         "parameterTypes": [ ]
       }
     ]
+  },
+  {
+    "name": "java.lang.ClassLoader"
   },
   {
     "name": "java.lang.Enum",
@@ -833,6 +1181,9 @@
   },
   {
     "name": "java.lang.String"
+  },
+  {
+    "name": "java.lang.String[]"
   },
   {
     "name": "java.lang.Void"
@@ -881,12 +1232,24 @@
     "name": "java.time.ZonedDateTime"
   },
   {
+    "name": "java.util.Collection"
+  },
+  {
     "name": "java.util.concurrent.Executor",
     "queryAllPublicMethods": true
   },
   {
+    "name": "java.util.Dictionary"
+  },
+  {
+    "name": "java.util.Enumeration"
+  },
+  {
     "name": "java.util.EventListener",
     "queryAllPublicMethods": true
+  },
+  {
+    "name": "java.util.Hashtable"
   },
   {
     "name": "java.util.List"
@@ -899,6 +1262,9 @@
   },
   {
     "name": "java.util.Map"
+  },
+  {
+    "name": "java.util.Properties"
   },
   {
     "name": "java.util.Set"
@@ -2944,12 +3310,22 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.beans.factory.BeanFactory",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
     "name": "org.springframework.beans.factory.BeanFactoryAware",
     "queryAllPublicMethods": true
   },
   {
     "name": "org.springframework.beans.factory.BeanNameAware",
     "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.beans.factory.config.AutowireCapableBeanFactory",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
   },
   {
     "name": "org.springframework.beans.factory.config.BeanFactoryPostProcessor",
@@ -2977,8 +3353,30 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.beans.factory.HierarchicalBeanFactory",
+    "methods": [
+      {
+        "name": "getParentBeanFactory",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.beans.factory.InitializingBean",
     "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.beans.factory.ListableBeanFactory",
+    "methods": [
+      {
+        "name": "getBeanDefinitionCount",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getBeanDefinitionNames",
+        "parameterTypes": [ ]
+      }
+    ]
   },
   {
     "name": "org.springframework.beans.factory.SmartInitializingSingleton",
@@ -7989,7 +8387,7 @@
       {
         "name": "setDefaultProperties",
         "parameterTypes": [
-          "java.util.Properties"
+          "java.util.Map"
         ]
       },
       {
@@ -8802,6 +9200,37 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.context.ApplicationContext",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getApplicationName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAutowireCapableBeanFactory",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDisplayName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getParent",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getStartupDate",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.context.ApplicationContextAware",
     "queryAllPublicMethods": true
   },
@@ -8861,6 +9290,23 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.context.support.ApplicationObjectSupport",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getApplicationContext",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setApplicationContext",
+        "parameterTypes": [
+          "org.springframework.context.ApplicationContext"
+        ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.context.support.DefaultLifecycleProcessor",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
@@ -8883,8 +9329,29 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.core.env.Environment",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getActiveProfiles",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDefaultProfiles",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.core.env.EnvironmentCapable",
-    "queryAllPublicMethods": true
+    "queryAllPublicMethods": true,
+    "methods": [
+      {
+        "name": "getEnvironment",
+        "parameterTypes": [ ]
+      }
+    ]
   },
   {
     "name": "org.springframework.core.io.InputStreamSource",
@@ -8941,6 +9408,15 @@
   {
     "name": "org.springframework.core.io.ResourceEditor",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.core.io.ResourceLoader",
+    "methods": [
+      {
+        "name": "getClassLoader",
+        "parameterTypes": [ ]
+      }
+    ]
   },
   {
     "name": "org.springframework.core.MethodParameter",
@@ -9916,6 +10392,19 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.web.context.support.WebApplicationObjectSupport",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "setServletContext",
+        "parameterTypes": [
+          "jakarta.servlet.ServletContext"
+        ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.web.cors.CorsConfigurationSource",
     "queryAllPublicMethods": true
   },
@@ -10217,6 +10706,108 @@
     "queryAllDeclaredMethods": true
   },
   {
+    "name": "org.springframework.web.servlet.view.AbstractUrlBasedView",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getUrl",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setUrl",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.web.servlet.view.AbstractView",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getAttributesMap",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getBeanName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getContentType",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getRequestContextAttribute",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getStaticAttributes",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isExposePathVariables",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setAttributes",
+        "parameterTypes": [
+          "java.util.Properties"
+        ]
+      },
+      {
+        "name": "setAttributesCSV",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setAttributesMap",
+        "parameterTypes": [
+          "java.util.Map"
+        ]
+      },
+      {
+        "name": "setBeanName",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setContentType",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setExposeContextBeansAsAttributes",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setExposedContextBeanNames",
+        "parameterTypes": [
+          "java.lang.String[]"
+        ]
+      },
+      {
+        "name": "setExposePathVariables",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setRequestContextAttribute",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.web.servlet.view.BeanNameViewResolver",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
@@ -10230,6 +10821,73 @@
     "name": "org.springframework.web.servlet.view.InternalResourceViewResolver",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.web.servlet.view.RedirectView",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getHosts",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isPropagateQueryProperties",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isRedirectView",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setContextRelative",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setEncodingScheme",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setExpandUriTemplateVariables",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setExposeModelAttributes",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setHosts",
+        "parameterTypes": [
+          "java.lang.String[]"
+        ]
+      },
+      {
+        "name": "setHttp10Compatible",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setPropagateQueryParams",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setStatusCode",
+        "parameterTypes": [
+          "org.springframework.http.HttpStatusCode"
+        ]
+      }
+    ]
   },
   {
     "name": "org.springframework.web.servlet.ViewResolver",
