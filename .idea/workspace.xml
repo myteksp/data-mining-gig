@@ -5,40 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0611498c-bc9f-463c-80c7-3bbe40105c8e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/dropbox.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/controllers/DropboxController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/controllers/DropboxController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/controllers/UploadsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/controllers/UploadsController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/DropBoxRepo$DropBoxEntity$EntityType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/DropBoxRepo$DropBoxEntity$EntityType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/DropBoxRepo$DropBoxEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/DropBoxRepo$DropBoxEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/DropBoxRepo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/repositories/DropBoxRepo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/services/DropboxService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/datamatcher/server/services/DropboxService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/generated/aotResources/META-INF/native-image/com.datamatcher/server/reflect-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/aotResources/META-INF/native-image/com.datamatcher/server/reflect-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/aot/META-INF/native-image/com.datamatcher/server/reflect-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/aot/META-INF/native-image/com.datamatcher/server/reflect-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/compileTransaction/stash-dir/DropBoxRepo__BeanDefinitions.class.uniqueId1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/compileTransaction/stash-dir/DropboxController__BeanDefinitions.class.uniqueId3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/compileTransaction/stash-dir/DropboxService__BeanDefinitions.class.uniqueId2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/compileTransaction/stash-dir/ServerApplication__BeanFactoryRegistrations.class.uniqueId5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/compileTransaction/stash-dir/UploadService__BeanDefinitions.class.uniqueId4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileAotJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileAotJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/DropboxController.class.uniqueId0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/DropboxService.class.uniqueId1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/controllers/DropboxController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/controllers/DropboxController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/controllers/UploadsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/controllers/UploadsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/repositories/DropBoxRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/repositories/DropBoxRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/repositories/RecordsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/repositories/RecordsRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/services/DropboxService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/datamatcher/server/services/DropboxService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
