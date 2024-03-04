@@ -78,7 +78,7 @@ public final class UploadService {
         final DataType type = response.dataType;
 
         final UploadResponse finalResponse = response;
-        final Thread thread = new Thread(()->{
+        Thread.startVirtualThread(()->{
             try {
                 if (type == DataType.JSON) {
                     uploadJson(finalResponse.uploadId, finalResponse.mappings, tempFile);
@@ -88,9 +88,7 @@ public final class UploadService {
             }finally {
                 tempFile.delete();
             }
-        }, "t_" + response.uploadId);
-        thread.setPriority(Thread.MAX_PRIORITY);
-        thread.start();
+        });
         return response;
     }
     public final UploadResponse upload(final DataType type_input,
