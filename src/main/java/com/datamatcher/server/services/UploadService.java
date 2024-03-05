@@ -196,6 +196,10 @@ public final class UploadService {
         repo.completeUploadProgress(uploadId);
     }
 
+    public final List<UploadResponse> listUnfinishedUploads(){
+        return repo.listUnfinishedUploads();
+    }
+
 
     private final void uploadCsv(final String fileName,
                                  final String uploadId,

@@ -244,6 +244,29 @@ public final class RecordsRepo {
         return getUploadById(upload.uploadId);
     }
 
+    public final List<UploadResponse> listUnfinishedUploads(){
+        final String query = "MATCH (n:UploadTracking) WHERE n.isComplete = false RETURN n;";
+        final List<UploadResponse> results = new ArrayList<>();
+        try (final var session = driver.session(SessionConfig.builder().withDatabase(database).build())) {
+            final List<Record> lst = session.run(query).list();
+            for (final Record record : lst){
+                final org.neo4j.driver.Value v = record.get("n");
+                results.add(new UploadResponse(
+                        v.get("fileName").asString(),
+                        v.get("uploadId").asString(),
+                        JSON.fromJson(v.get("mappings").asString(), ListOfDataMappings.class),
+                        DataType.valueOf(v.get("dataType").asString()),
+                        v.get("isComplete").asBoolean(),
+                        v.get("processed").asLong(),
+                        v.get("outOf").asLong()));
+            }
+        }catch (final Throwable cause){
+            logger.error("Failed to find uploads. Query: {}. Cause:", query, cause);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find uploads", cause);
+        }
+        return results;
+    }
+
     public final UploadResponse getUploadById(final String id){
         final String query = "MATCH (n:UploadTracking) WHERE n.uploadId=$id RETURN n;";
         final Record record;

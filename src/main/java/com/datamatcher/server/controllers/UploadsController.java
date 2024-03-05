@@ -38,6 +38,11 @@ public class UploadsController {
         return uploadService.search(recordType, filter, filterType, enrichmentMethod, joinOn, maxDepth, skip, limit);
     }
 
+    @GetMapping(value = "/listUnfinishedUploads", produces = MediaType.APPLICATION_JSON_VALUE)
+    public final List<UploadResponse> listUnfinishedUploads(){
+        return uploadService.listUnfinishedUploads();
+    }
+
 
     @GetMapping(value = "/getMappings", produces = MediaType.APPLICATION_JSON_VALUE)
     public final List<String> getMappings(){
