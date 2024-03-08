@@ -26,17 +26,6 @@ public class UploadsController {
         this.uploadService = uploadService;
     }
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public final List<Map<String, List<String>>> search(@RequestParam(value = "recordType", defaultValue = "") final String recordType,
-                                                        @RequestParam(value = "filter", defaultValue = "") final String filter,
-                                                        @RequestParam(value = "filterType", defaultValue = "NONE") final RecordsRepo.FilterType filterType,
-                                                        @RequestParam(value = "enrichmentMethod", defaultValue = "NONE") final RecordsRepo.EnrichmentMethod enrichmentMethod,
-                                                        @RequestParam(value = "joinOn", required = true) final List<String> joinOn,
-                                                        @RequestParam(value = "maxDepth", defaultValue = "10") final int maxDepth,
-                                                        @RequestParam(value = "skip", defaultValue = "0") final int skip,
-                                                        @RequestParam(value = "limit", defaultValue = "100") final int limit){
-        return uploadService.search(recordType, filter, filterType, enrichmentMethod, joinOn, maxDepth, skip, limit);
-    }
 
     @GetMapping(value = "/listUnfinishedUploads", produces = MediaType.APPLICATION_JSON_VALUE)
     public final List<UploadResponse> listUnfinishedUploads(){

@@ -126,16 +126,7 @@ public final class UploadService {
     }
 
 
-    public final List<Map<String, List<String>>> search(final String recordType,
-                                                        final String filter,
-                                                        final RecordsRepo.FilterType filterType,
-                                                        final RecordsRepo.EnrichmentMethod enrichmentMethod,
-                                                        final List<String> joinOn,
-                                                        final int maxDepth,
-                                                        final int skip,
-                                                        final int limit){
-        return repo.search(recordType, filter, filterType, enrichmentMethod, joinOn, maxDepth, skip, limit);
-    }
+
     private final DataType autodetect(final File file){
         for (final DataType type : DataType.values()){
             if (type != DataType.AUTODETECT){
@@ -347,22 +338,6 @@ public final class UploadService {
         return true;
     }
 
-    private Map<String, String> parseMapping(final List<String> mappings){
-        if (mappings.isEmpty()){
-            logger.error("Upload rejected. Mappings are empty.");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Mappings are empty");
-        }
-        final Map<String, String> res = new HashMap<>(mappings.size() * 2);
-        for(final String mapping : mappings){
-            final String[] split = mapping.split(":");
-            if (split.length != 2){
-                logger.error("Upload rejected. Invalid mapping: '{}'.", mapping);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid mapping: '" + mapping + "'.");
-            }
-            res.put(split[0], split[1]);
-        }
-        return res;
-    }
 
 
 

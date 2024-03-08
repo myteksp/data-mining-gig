@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -190,8 +191,28 @@ public final class DropBoxRepo {
         }
     }
 
+    public final DropBoxEntity upload(final String path, final File file){
+        return _upload(path, file, 0);
+    }
     public final DropBoxEntity upload(final String path, final MultipartFile file){
         return _upload(path, file, 0);
+    }
+    private final DropBoxEntity _upload(final String path, final File file, final int retry){
+        final DbxClientV2 client = getClient();
+        try(final InputStream inputStream = new FileInputStream(file)){
+            final FileMetadata metadata = client.files().uploadBuilder(path).uploadAndFinish(inputStream);
+            return new DropBoxEntity(DropBoxEntity.EntityType.FILE, metadata.getPathDisplay());
+        }catch (final Throwable cause){
+            if (retry > 3){
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to upload file to dropbox", cause);
+            }
+            try {
+                client.refreshAccessToken();
+                return _upload(path, file, retry + 1);
+            }catch (final Throwable refreshFailure){
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to refresh token", cause);
+            }
+        }
     }
     private final DropBoxEntity _upload(final String path, final MultipartFile file, final int retry){
         final DbxClientV2 client = getClient();
