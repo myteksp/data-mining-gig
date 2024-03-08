@@ -78,6 +78,7 @@ public final class UploadService {
         final DataType type = response.dataType;
 
         final UploadResponse finalResponse = response;
+
         Thread.startVirtualThread(()->{
             try {
                 if (type == DataType.JSON) {
@@ -200,6 +201,15 @@ public final class UploadService {
         return repo.listUnfinishedUploads();
     }
 
+    private final List<CSVRecord> getBulkOfRecords(final Iterator<CSVRecord> csvParser, final int size){
+        final List<CSVRecord> result = new ArrayList<>(size);
+        while (csvParser.hasNext()){
+            result.add(csvParser.next());
+            if (result.size() >= size)
+                return result;
+        }
+        return result;
+    }
 
     private final void uploadCsv(final String fileName,
                                  final String uploadId,
@@ -216,44 +226,68 @@ public final class UploadService {
             repo.completeUploadProgressWithError(uploadId, "Failed to open file. Cause: " + cause.getMessage());
             return;
         }
+        final int bulkSize = 10;
+        final Iterator<CSVRecord> iterator = csvParser.iterator();
+        List<CSVRecord> bulkOfRecords = null;
         long byteCounter = 0;
-
         if (withHeader) {
-            for (final CSVRecord csvRecord : csvParser) {
-                byteCounter += Arrays.stream(csvRecord.values()).mapToInt(String::length).sum();
-                final List<DataRecord> records = new ArrayList<>(csvRecord.size());
-                for (final DataMapping e : mappings) {
-                    final String value;
-                    try{
-                        value = csvRecord.get(e.path);
-                    }catch (final Throwable t){
-                        continue;
-                    }
-                    if (hasContent(value)) {
-                        records.add(new DataRecord(e.name, StringTransformer.transform(value, e.transformations)));
-                    }
+            do{
+                final long startTime = System.currentTimeMillis();
+                bulkOfRecords = getBulkOfRecords(iterator, bulkSize);
+                final List<Thread> threads = new ArrayList<>(bulkSize);
+                for(final CSVRecord csvRecord : bulkOfRecords){
+                    byteCounter += Arrays.stream(csvRecord.values()).mapToInt(String::length).sum();
+                    threads.add(Thread.startVirtualThread(()->{
+                        final List<DataRecord> records = new ArrayList<>(csvRecord.size());
+                        for (final DataMapping e : mappings) {
+                            final String value;
+                            try{
+                                value = csvRecord.get(e.path);
+                            }catch (final Throwable t){
+                                continue;
+                            }
+                            if (hasContent(value)) {
+                                records.add(new DataRecord(e.name, StringTransformer.transform(value, e.transformations)));
+                            }
+                        }
+                        repo.saveRecord(records);
+                    }));
                 }
-                repo.saveRecord(records);
+                for(final Thread t : threads){
+                    try {t.join();}catch (final Throwable ignored){}
+                }
                 repo.updateUploadProgress(uploadId, byteCounter);
-            }
+                logger.info("Bulk of {} ingested in {} milliseconds.", bulkSize, (System.currentTimeMillis() - startTime));
+            }while (!bulkOfRecords.isEmpty());
         } else {
-            for (final CSVRecord csvRecord : csvParser) {
-                byteCounter += Arrays.stream(csvRecord.values()).mapToInt(r -> r.length() + 2).sum();
-                final List<DataRecord> records = new ArrayList<>(csvRecord.size());
-                for (final DataMapping e : mappings) {
-                    final String value;
-                    try{
-                        value = csvRecord.get(Integer.parseInt(e.path));
-                    }catch (final Throwable t){
-                        continue;
-                    }
-                    if (hasContent(value)) {
-                        records.add(new DataRecord(e.name, StringTransformer.transform(value, e.transformations)));
-                    }
+            do{
+                final long startTime = System.currentTimeMillis();
+                bulkOfRecords = getBulkOfRecords(iterator, bulkSize);
+                final List<Thread> threads = new ArrayList<>(bulkSize);
+                for(final CSVRecord csvRecord : bulkOfRecords){
+                    byteCounter += Arrays.stream(csvRecord.values()).mapToInt(String::length).sum();
+                    threads.add(Thread.startVirtualThread(()->{
+                        final List<DataRecord> records = new ArrayList<>(csvRecord.size());
+                        for (final DataMapping e : mappings) {
+                            final String value;
+                            try{
+                                value = csvRecord.get(Integer.parseInt(e.path));
+                            }catch (final Throwable t){
+                                continue;
+                            }
+                            if (hasContent(value)) {
+                                records.add(new DataRecord(e.name, StringTransformer.transform(value, e.transformations)));
+                            }
+                        }
+                        repo.saveRecord(records);
+                    }));
                 }
-                repo.saveRecord(records);
+                for(final Thread t : threads){
+                    try {t.join();}catch (final Throwable ignored){}
+                }
                 repo.updateUploadProgress(uploadId, byteCounter);
-            }
+                logger.info("Bulk of {} ingested in {} milliseconds.", bulkSize, (System.currentTimeMillis() - startTime));
+            }while (!bulkOfRecords.isEmpty());
         }
         repo.updateUploadProgress(uploadId, file.length());
         repo.completeUploadProgress(uploadId);

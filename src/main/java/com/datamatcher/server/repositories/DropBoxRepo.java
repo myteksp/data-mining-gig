@@ -59,6 +59,10 @@ public final class DropBoxRepo {
         this._client = null;
     }
 
+    public final String getRedirectUri(){
+        return "http://localhost:8080/dropbox/authorize";
+    }
+
     private final void saveCredentials(final String accessToken, final Long expiresAt, final String refreshToken){
         try (final Driver driver = GraphDatabase.driver(uri, AuthTokens.basic(userName, password))) {
             try (final var session = driver.session(SessionConfig.builder().withDatabase(database).build())) {
@@ -90,10 +94,6 @@ public final class DropBoxRepo {
                 return null;
             }
         }
-    }
-
-    public final String getRedirectUri(){
-        return "http://localhost:8080/dropbox/authorize";
     }
 
     public final String getAppKey(){
