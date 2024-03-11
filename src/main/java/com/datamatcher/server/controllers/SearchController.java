@@ -33,6 +33,11 @@ public class SearchController {
         return service.search(recordType, filter, filterType, enrichmentMethod, joinOn, maxDepth, skip, limit);
     }
 
+    @GetMapping(value = "/getMappings", produces = MediaType.APPLICATION_JSON_VALUE)
+    public final List<String> getMappings(){
+        return service.getMappings();
+    }
+
     @GetMapping(value = "/exportToDropbox", produces = MediaType.APPLICATION_JSON_VALUE)
     public final Map<String, Object> exportToDropbox(@RequestParam(value = "recordType", defaultValue = "") final String recordType,
                                                       @RequestParam(value = "filter", defaultValue = "") final String filter,

@@ -33,11 +33,6 @@ public class UploadsController {
     }
 
 
-    @GetMapping(value = "/getMappings", produces = MediaType.APPLICATION_JSON_VALUE)
-    public final List<String> getMappings(){
-        return uploadService.getMappings();
-    }
-
     @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public final UploadResponse upload(@RequestParam("file") final MultipartFile file,

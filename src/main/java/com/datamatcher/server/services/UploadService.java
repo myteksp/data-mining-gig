@@ -39,10 +39,6 @@ public final class UploadService {
     }
 
 
-    public final List<String> getMappings(){
-        return repo.getMappings();
-    }
-
     public final UploadResponse ingestFromDropBox(final DataType type_input,
                                                   final List<String> mappings,
                                                   final String path,

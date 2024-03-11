@@ -28,6 +28,11 @@ public class SearchService {
         this.repo = repo;
         this.dropBoxRepo = dropBoxRepo;
     }
+
+    public final List<String> getMappings(){
+        return repo.getMappings();
+    }
+
     public final List<Map<String, List<String>>> search(final String recordType,
                                                         final String filter,
                                                         final SearchRepo.FilterType filterType,
