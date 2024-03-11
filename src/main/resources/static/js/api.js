@@ -45,7 +45,17 @@ $(function(){
                     callBack(data);
                 }
             });
-        }
+        },
+        listUnfinishedUploads: function(callBack){
+            $.ajax({
+                url: '/uploads/listUnfinishedUploads',
+                method: 'get',
+                dataType: 'json',
+                success: function(data){
+                    callBack(data);
+                }
+            });
+        },
     };
     API.uploads = uploads;
 });
