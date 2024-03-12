@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getListUnfinishedUploads } from './../api.ts';
-import { Card, Table } from 'react-bootstrap';
+import { Card, ProgressBar, Table } from 'react-bootstrap';
 
 export const ListUnfinishedUploads = () => {
   const [unfinishedUploads, setUnfinishedUploads] = useState<
@@ -13,9 +13,9 @@ export const ListUnfinishedUploads = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(unfinishedUploads);
-  }, [unfinishedUploads]);
+  function getPercent(value: number, total: number) {
+    return (value * 100) / total;
+  }
 
   return (
     <Card className="mb-3">
@@ -30,11 +30,20 @@ export const ListUnfinishedUploads = () => {
             </tr>
           </thead>
           <tbody>
-            {unfinishedUploads &&
+            {unfinishedUploads !== null &&
               unfinishedUploads.map((item) => (
                 <tr>
                   <td>{item.fileName}</td>
-                  <td>{((item.processed * 100) / item.outOf).toFixed(2)}%</td>
+                  <td className={'d-flex align-items-center'}>
+                    <div>
+                      {((item.processed * 100) / item.outOf).toFixed(2)}%
+                    </div>
+                    <ProgressBar
+                      animated
+                      now={getPercent(item.processed, item.outOf)}
+                      className={'flex-fill ms-2'}
+                    />
+                  </td>
                 </tr>
               ))}
           </tbody>

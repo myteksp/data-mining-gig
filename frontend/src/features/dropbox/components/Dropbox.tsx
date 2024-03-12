@@ -3,10 +3,9 @@ import { ListUnfinishedUploads } from './ListUnfinishedUploads.tsx';
 
 export const Dropbox = () => {
   return (
-    <>
+    <div className={'main'}>
       <ListUnfinishedUploads />
       <Search />
-      <div>Test Dropbox</div>
-    </>
+    </div>
   );
 };
