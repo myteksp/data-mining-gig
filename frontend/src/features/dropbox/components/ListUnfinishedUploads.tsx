@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getListUnfinishedUploads } from './../api.ts';
 import { Card, ProgressBar, Table } from 'react-bootstrap';
+import { UnfinishedUpload } from '@/types.ts';
 
 export const ListUnfinishedUploads = () => {
   const [unfinishedUploads, setUnfinishedUploads] = useState<
@@ -32,7 +33,7 @@ export const ListUnfinishedUploads = () => {
           <tbody>
             {unfinishedUploads !== null &&
               unfinishedUploads.map((item) => (
-                <tr>
+                <tr key={item.uploadId}>
                   <td>{item.fileName}</td>
                   <td className={'d-flex align-items-center'}>
                     <div>

@@ -38,7 +38,7 @@ $(function(){
     var uploads = {
         getMappings: function(callBack){
             $.ajax({
-                url: '/uploads/getMappings',
+                url: '/search/getMappings',
                 method: 'get',
                 dataType: 'json',
                 success: function(data){
