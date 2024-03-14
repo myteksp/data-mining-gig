@@ -60,3 +60,8 @@ export interface SearchParams {
   skip: number;
   limit: number;
 }
+
+export interface UploadParams {
+  type: DataType;
+  mappings: string;
+}

@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Row, Spinner } from 'react-bootstrap';
+import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { getMappings, getSearch } from './../api.ts';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -228,8 +228,11 @@ export const Search = () => {
           </Button>
         </Form>
 
-        {isLoading && <Spinner animation="border" variant="primary" />}
-        <SearchResults mappings={mappings} searchResults={searchResults} />
+        <SearchResults
+          isLoading={isLoading}
+          mappings={mappings}
+          searchResults={searchResults}
+        />
       </Card.Body>
     </Card>
   );

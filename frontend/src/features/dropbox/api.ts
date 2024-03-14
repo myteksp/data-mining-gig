@@ -1,5 +1,10 @@
 import { axiosInstance } from '@/features/axios';
-import { ConnectionStatus, SearchParams, UnfinishedUpload } from '@/types.ts';
+import {
+  ConnectionStatus,
+  SearchParams,
+  UnfinishedUpload,
+  UploadParams,
+} from '@/types.ts';
 
 export const getConnectionStatus = () => {
   return axiosInstance.get<ConnectionStatus>('/dropbox/connectionStatus');
@@ -13,6 +18,18 @@ export const getListUnfinishedUploads = () => {
   return axiosInstance.get<UnfinishedUpload[]>(
     '/uploads/listUnfinishedUploads',
   );
+};
+
+export const upload = (file: File, params: UploadParams) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return axiosInstance.post('/uploads/upload', formData, {
+    params: params,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };
 
 export const getMappings = () => {

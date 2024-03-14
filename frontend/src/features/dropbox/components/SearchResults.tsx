@@ -1,21 +1,21 @@
-import { Table } from 'react-bootstrap';
-import { useEffect } from 'react';
+import { Spinner, Table } from 'react-bootstrap';
+import React from 'react';
 
-interface SearchResultsParams {
+interface SearchResultsProps {
+  isLoading?: boolean;
   mappings: string[] | null;
   searchResults: any[];
 }
 
-export const SearchResults = (props: SearchResultsParams) => {
-  const { mappings, searchResults } = props;
-
-  useEffect(() => {
-    console.log('searchResults', searchResults);
-  }, [searchResults]);
-
+export const SearchResults: React.FC<SearchResultsProps> = ({
+  isLoading,
+  searchResults,
+  mappings,
+}) => {
   return (
     <>
-      {mappings?.length && searchResults.length ? (
+      {isLoading && <Spinner animation="border" variant="primary" />}
+      {!isLoading && mappings?.length && searchResults.length ? (
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
