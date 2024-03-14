@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Data processor</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>-->
     <script type="module" crossorigin src="frontend/js/scripts.js"></script>
     <link rel="stylesheet" crossorigin href="frontend/css/index.css">
 </head>
@@ -13,89 +12,10 @@
 
 <div id="dropbox-root"></div>
 
-<div id="drop-box-container" class="mb-3"></div>
-
-<div class="card mb-3">
-    <div class="card-body">
-        <h5 class="card-title">Ingest from file</h5>
-
-        <button type="button" class="btn btn-primary">Upload</button>
-    </div>
-</div>
-
-<div id="search-container" class="card mb-3">
-    <div class="card-body">
-        <h5 class="card-title">Search</h5>
-
-        <form action="javascript:void(0);">
-            <fieldset>
-                <div class="row">
-                    <div class="col mb-3">
-                        <label for="search-start-node" class="form-label">Select column to search</label>
-                        <select name="speed" id="search-start-node" class="form-select">
-                            <option selected value="ALL">ALL</option>
-                        </select>
-                    </div>
-                    <div class="col mb-3">
-                        <label for="search-query-field" class="form-label">Select query type</label>
-                        <select name="speed" id="search-query-field" class="form-select">
-                            <option selected value="CONTAINS">CONTAINS</option>
-                            <option value="STARTS_WITH">STARTS_WITH</option>
-                            <option value="ENDS_WITH">ENDS_WITH</option>
-                            <option value="EQUALS">EQUALS</option>
-                            <option value="NONE">NONE</option>
-                        </select>
-                    </div>
-                    <div class="col mb-3">
-                        <label for="search-join-on" class="form-label">Select on which field to search commonalities</label>
-                        <select name="join" id="search-join-on" class="form-select">
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col mb-3">
-                        <label for="search-enrichment-mode" class="form-label">Select enrichment mode</label>
-                        <select name="speed" id="search-enrichment-mode" class="form-select">
-                            <option selected value="DEEP">DEEP</option>
-                            <option value="SHALLOW">SHALLOW</option>
-                            <option value="NONE">NONE</option>
-                        </select>
-                    </div>
-                    <div class="col mb-3">
-                        <label for="search-enrichment-depth-number" class="form-label">Enrichment depth</label>
-                        <input type="text" id="search-enrichment-depth-number" name="enrichment depth" value="10" class="form-control">
-                    </div>
-                    <div class="col mb-3">
-                        <label for="search-skip-number" class="form-label">Skip</label>
-                        <input type="text" id="search-skip-number" name="skip" value="0" class="form-control">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col mb-3">
-                        <label for="search-limit-number" class="form-label">Limit</label>
-                        <input type="text" id="search-limit-number" name="limit" value="100" class="form-control">
-                    </div>
-                    <div class="col mb-3">
-                        <label for="search-query-string" class="form-label">Query</label>
-                        <input type="text" id="search-query-string" name="query" value="" class="form-control">
-                    </div>
-                </div>
-
-                <button id="search-button" class="btn btn-primary">Search</button>
-            </fieldset>
-        </form>
-
-        <div id="search-button-results-container" >
-
-        </div>
-    </div>
-</div>
 <iframe src="/swagger-ui/index.html#/uploads-controller/upload" height="800px" width="100%"></iframe>
 
-<script src="/js/api.js"></script>
-<script src="/js/dropbox.js"></script>
-<script src="/js/search.js"></script>
+<!--<script src="/js/api.js"></script>-->
+<!--<script src="/js/dropbox.js"></script>-->
+<!--<script src="/js/search.js"></script>-->
 </body>
 </html>

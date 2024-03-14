@@ -1,98 +1,80 @@
-import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
+import { Button, Card, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { getMappings, getSearch } from './../api.ts';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { EnrichmentMethod, FilterType, SearchParams } from '@/types.ts';
+import { SearchResults } from './SearchResults.tsx';
 
 interface SearchFormInputs {
-  searchStartNode: string;
-  searchQueryField: FilterType;
-  searchJoinOn: string;
-  searchEnrichmentMode: EnrichmentMethod;
-  searchEnrichmentDepthNumber: number;
-  searchSkipNumber: number;
-  searchLimitNumber: number;
-  searchQueryString: string;
+  startNode: string;
+  queryField: FilterType;
+  joinOn: string;
+  enrichmentMode: EnrichmentMethod;
+  enrichmentDepthNumber: number;
+  skipNumber: number;
+  limitNumber: number;
+  queryString: string;
 }
 
 export const Search = () => {
   const [mappings, setMappings] = useState<string[] | null>(null);
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getMappings().then((value) => {
       setMappings(value.data);
-      setValue('searchJoinOn', value.data[0]);
+      setValue('joinOn', value.data[0]);
     });
   }, []);
 
   const { control, setValue, handleSubmit } = useForm<SearchFormInputs>({
     defaultValues: {
-      searchStartNode: 'ALL',
-      searchQueryField: FilterType.CONTAINS,
-      searchJoinOn: '',
-      searchEnrichmentMode: EnrichmentMethod.DEEP,
-      searchEnrichmentDepthNumber: 10,
-      searchSkipNumber: 0,
-      searchLimitNumber: 100,
-      searchQueryString: '',
+      startNode: 'ALL',
+      queryField: FilterType.CONTAINS,
+      joinOn: '',
+      enrichmentMode: EnrichmentMethod.DEEP,
+      enrichmentDepthNumber: 10,
+      skipNumber: 0,
+      limitNumber: 100,
+      queryString: '',
     },
   });
 
-  const onSubmit: SubmitHandler<SearchFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<SearchFormInputs> = (data) => {
     const params: SearchParams = {
-      filter: data.searchQueryString,
-      filterType: data.searchQueryField,
-      enrichmentMethod: data.searchEnrichmentMode,
-      joinOn: data.searchJoinOn,
-      maxDepth: data.searchEnrichmentDepthNumber,
-      skip: data.searchSkipNumber,
-      limit: data.searchLimitNumber,
+      filter: data.queryString,
+      filterType: data.queryField,
+      enrichmentMethod: data.enrichmentMode,
+      joinOn: data.joinOn,
+      maxDepth: data.enrichmentDepthNumber,
+      skip: data.skipNumber,
+      limit: data.limitNumber,
     };
 
-    if (data.searchStartNode !== 'ALL') {
-      params.recordType = data.searchStartNode;
+    if (data.startNode !== 'ALL') {
+      params.recordType = data.startNode;
     }
 
     const batchSize = 10;
     const loopLimit =
-      data.searchLimitNumber < batchSize
-        ? 1
-        : data.searchLimitNumber / batchSize;
+      data.limitNumber < batchSize ? 1 : data.limitNumber / batchSize;
+
+    setIsLoading(true);
+    setSearchResults([]);
 
     for (let i = 0; i < loopLimit; i++) {
-      const params: SearchParams = {
-        filter: data.searchQueryString,
-        filterType: data.searchQueryField,
-        enrichmentMethod: data.searchEnrichmentMode,
-        joinOn: data.searchJoinOn,
-        maxDepth: data.searchEnrichmentDepthNumber,
-        skip: data.searchSkipNumber + batchSize * i,
-        limit: batchSize,
-      };
-
-      if (data.searchStartNode !== 'ALL') {
-        params.recordType = data.searchStartNode;
-      }
+      params.skip = data.skipNumber + batchSize * i;
+      params.limit = batchSize;
 
       getSearch(params).then((data) => {
         setSearchResults((prevState) => {
           return [...prevState, ...data.data];
         });
-        /*for (let i = 0; i < data.data.length; i++) {
-          // searchResults.push(data.data[i]);
-          console.log('data', data.data[i]);
-          setSearchResults((prevState) => {
-            return [...prevState, data.data[i]];
-          });
-        }*/
+        setIsLoading(false);
       });
     }
   };
-
-  useEffect(() => {
-    console.log('searchResults', searchResults);
-  }, [searchResults]);
 
   return (
     <Card>
@@ -105,7 +87,7 @@ export const Search = () => {
               <Form.Group className="mb-3" controlId="search-start-node">
                 <Form.Label>Select column to search</Form.Label>
                 <Controller
-                  name="searchStartNode"
+                  name="startNode"
                   control={control}
                   render={({ field }) => (
                     <Form.Select {...field}>
@@ -125,15 +107,17 @@ export const Search = () => {
               <Form.Group className="mb-3" controlId="search-query-field">
                 <Form.Label>Select query type</Form.Label>
                 <Controller
-                  name="searchQueryField"
+                  name="queryField"
                   control={control}
                   render={({ field }) => (
                     <Form.Select {...field}>
-                      <option value="CONTAINS">CONTAINS</option>
-                      <option value="STARTS_WITH">STARTS_WITH</option>
-                      <option value="ENDS_WITH">ENDS_WITH</option>
-                      <option value="EQUALS">EQUALS</option>
-                      <option value="NONE">NONE</option>
+                      {Object.keys(FilterType).map((item) => {
+                        return (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        );
+                      })}
                     </Form.Select>
                   )}
                 />
@@ -145,7 +129,7 @@ export const Search = () => {
                   Select on which field to search commonalities
                 </Form.Label>
                 <Controller
-                  name="searchJoinOn"
+                  name="joinOn"
                   control={control}
                   render={({ field }) => (
                     <Form.Select {...field}>
@@ -167,13 +151,17 @@ export const Search = () => {
               <Form.Group className="mb-3" controlId="search-enrichment-mode">
                 <Form.Label>Select enrichment mode</Form.Label>
                 <Controller
-                  name="searchEnrichmentMode"
+                  name="enrichmentMode"
                   control={control}
                   render={({ field }) => (
                     <Form.Select {...field}>
-                      <option value="DEEP">DEEP</option>
-                      <option value="SHALLOW">SHALLOW</option>
-                      <option value="NONE">NONE</option>
+                      {Object.keys(EnrichmentMethod).map((item) => {
+                        return (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        );
+                      })}
                     </Form.Select>
                   )}
                 />
@@ -186,7 +174,7 @@ export const Search = () => {
               >
                 <Form.Label>Enrichment depth</Form.Label>
                 <Controller
-                  name="searchEnrichmentDepthNumber"
+                  name="enrichmentDepthNumber"
                   control={control}
                   render={({ field }) => (
                     <Form.Control {...field} type="text" />
@@ -198,7 +186,7 @@ export const Search = () => {
               <Form.Group className="mb-3" controlId="search-skip-number">
                 <Form.Label>Skip</Form.Label>
                 <Controller
-                  name="searchSkipNumber"
+                  name="skipNumber"
                   control={control}
                   render={({ field }) => (
                     <Form.Control {...field} type="text" />
@@ -213,7 +201,7 @@ export const Search = () => {
               <Form.Group className="mb-3" controlId="search-limit-number">
                 <Form.Label>Limit</Form.Label>
                 <Controller
-                  name="searchLimitNumber"
+                  name="limitNumber"
                   control={control}
                   render={({ field }) => (
                     <Form.Control {...field} type="text" />
@@ -225,7 +213,7 @@ export const Search = () => {
               <Form.Group className="mb-3" controlId="search-query-string">
                 <Form.Label>Query</Form.Label>
                 <Controller
-                  name="searchQueryString"
+                  name="queryString"
                   control={control}
                   render={({ field }) => (
                     <Form.Control {...field} type="text" />
@@ -240,25 +228,8 @@ export const Search = () => {
           </Button>
         </Form>
 
-        <Table striped bordered>
-          <thead>
-            <tr>
-              {mappings !== null &&
-                mappings.map((item) => <th key={item}>{item}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {searchResults !== null &&
-              searchResults.map((row) => (
-                <tr key={row}>
-                  {mappings !== null &&
-                    mappings.map((item) => (
-                      <td>{row[item] ? row[item].join(', ') : ''}</td>
-                    ))}
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+        {isLoading && <Spinner animation="border" variant="primary" />}
+        <SearchResults mappings={mappings} searchResults={searchResults} />
       </Card.Body>
     </Card>
   );
