@@ -63,5 +63,5 @@ export interface SearchParams {
 
 export interface UploadParams {
   type: DataType;
-  mappings: string;
+  mappings: string[];
 }

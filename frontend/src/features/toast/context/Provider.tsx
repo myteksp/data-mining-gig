@@ -2,6 +2,8 @@ import { ToastContext } from './Context.ts';
 import React, { useState } from 'react';
 import { ShowToastOptions, ToastType } from '@/features/toast/types.ts';
 import { Toast, ToastContainer } from 'react-bootstrap';
+import { MdError } from 'react-icons/md';
+import { FaCheckCircle } from 'react-icons/fa';
 
 interface ToastProviderProps extends React.PropsWithChildren {}
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
@@ -29,9 +31,13 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
           onClose={() => {
             setIsOpened(false);
           }}
-          /*bg={variant}*/
+          className={'m-2'}
         >
-          <Toast.Header className={`bg-${variant}`}>
+          <Toast.Header className={`bg-${variant} text-white`}>
+            {variant == ToastType.DANGER && <MdError className={'me-1'} />}
+            {variant == ToastType.SUCCESS && (
+              <FaCheckCircle className={'me-1'} />
+            )}
             <strong className="me-auto">{title}</strong>
           </Toast.Header>
           <Toast.Body>{message}</Toast.Body>

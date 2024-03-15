@@ -24,11 +24,15 @@ export const upload = (file: File, params: UploadParams) => {
   const formData = new FormData();
   formData.append('file', file);
 
+  const urlParams = new URLSearchParams();
+  urlParams.append('type', params.type);
+
+  params.mappings.forEach((value) => {
+    urlParams.append(`mappings`, value);
+  });
+
   return axiosInstance.post('/uploads/upload', formData, {
-    params: params,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
+    params: urlParams,
   });
 };
 
