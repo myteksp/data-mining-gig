@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 import {
   Controller,
@@ -65,10 +64,6 @@ export const UploadFromFile = () => {
     control,
     name: 'mappings',
   });
-
-  useEffect(() => {
-    console.log('errors', errors);
-  }, [errors]);
 
   const onSubmit: SubmitHandler<UploadFormInputs> = async (data) => {
     console.log(data);

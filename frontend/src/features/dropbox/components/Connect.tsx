@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getConnectionStatus, getConnectUrl } from './../api.ts';
-import { Button } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
 
 export const Connect = () => {
   const [connectionStatus, setConnectionStatus] = useState<boolean>(false);
@@ -19,10 +19,12 @@ export const Connect = () => {
   }, []);
 
   return (
-    <div className={'mb-3'}>
-      {connectionStatus && <div>Dropbox connected. File browser TBD</div>}
+    <div>
+      {connectionStatus && (
+        <Badge bg="success">Dropbox connected. File browser TBD</Badge>
+      )}
       {connectionUrl && (
-        <Button href={connectionUrl} variant="outline-primary">
+        <Button href={connectionUrl} variant="outline-info" size="sm">
           Connect Dropbox
         </Button>
       )}
