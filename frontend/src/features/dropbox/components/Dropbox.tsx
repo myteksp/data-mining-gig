@@ -4,6 +4,7 @@ import { ListUnfinishedUploads } from './ListUnfinishedUploads.tsx';
 import { UploadFromFile } from './UploadFromFile.tsx';
 import { Col, Nav, Row, Tab } from 'react-bootstrap';
 import { ColorModeSwitch } from '@/features/dropbox/components/ColorModeSwitch.tsx';
+import { UploadFromDropbox } from '@/features/dropbox/components/UploadFromDropbox.tsx';
 
 export const Dropbox = () => {
   return (
@@ -21,6 +22,11 @@ export const Dropbox = () => {
                 <Nav.Link eventKey="uploadFromFile">Ingest from file</Nav.Link>
               </Nav.Item>
               <Nav.Item>
+                <Nav.Link eventKey="uploadFromDropbox">
+                  Ingest from Dropbox
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
                 <Nav.Link eventKey="listUnfinishedUploads">
                   Active ingestions
                 </Nav.Link>
@@ -34,6 +40,9 @@ export const Dropbox = () => {
             <Tab.Content>
               <Tab.Pane eventKey="uploadFromFile">
                 <UploadFromFile />
+              </Tab.Pane>
+              <Tab.Pane eventKey="uploadFromDropbox">
+                <UploadFromDropbox />
               </Tab.Pane>
               <Tab.Pane eventKey="listUnfinishedUploads">
                 <ListUnfinishedUploads />

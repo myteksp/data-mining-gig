@@ -65,3 +65,13 @@ export interface UploadParams {
   type: DataType;
   mappings: string[];
 }
+
+export enum DropboxListItemType {
+  FILE = 'FILE',
+  DIRECTORY = 'DIRECTORY',
+}
+
+export interface DropboxListItem {
+  type: DropboxListItemType;
+  path: string;
+}

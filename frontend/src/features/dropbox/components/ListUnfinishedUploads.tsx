@@ -19,7 +19,7 @@ export const ListUnfinishedUploads = () => {
   }
 
   return (
-    <Card className="mb-3">
+    <Card>
       <Card.Body>
         <Card.Title>Active ingestions</Card.Title>
 

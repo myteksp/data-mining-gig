@@ -1,6 +1,7 @@
 import { axiosInstance } from '@/features/axios';
 import {
   ConnectionStatus,
+  DropboxListItem,
   SearchParams,
   UnfinishedUpload,
   UploadParams,
@@ -43,5 +44,24 @@ export const getMappings = () => {
 export const getSearch = (params: SearchParams) => {
   return axiosInstance.get('/search/search', {
     params: params,
+  });
+};
+
+export const uploadFromDropbox = (path: string, params: UploadParams) => {
+  const urlParams = new URLSearchParams();
+  urlParams.append('type', params.type);
+
+  params.mappings.forEach((value) => {
+    urlParams.append(`mappings`, value);
+  });
+
+  return axiosInstance.post('/uploads/upload', path, {
+    params: urlParams,
+  });
+};
+
+export const getDropboxListFolder = (path: string) => {
+  return axiosInstance.get<DropboxListItem[]>('/dropbox/listFolder', {
+    params: { path: path },
   });
 };
