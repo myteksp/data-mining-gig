@@ -29,6 +29,7 @@ export const ColorModeSwitch = () => {
     <div className={'d-flex align-items-center'}>
       {colorMode == 'dark' ? <FiMoon /> : <FiSun />}
       <Form.Check
+        id={'color-mode-switch'}
         defaultChecked={colorMode == 'dark'}
         type="switch"
         onClick={modeToggle}

@@ -1,31 +1,128 @@
-import { Card, Spinner, Table } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import { getDropboxListFolder } from '@/features/dropbox/api.ts';
-import { DropboxListItem, DropboxListItemType } from '@/types.ts';
-import { GoFileDirectoryFill } from 'react-icons/go';
-import { FaRegFile } from 'react-icons/fa';
-import { IoReturnUpBackSharp } from 'react-icons/io5';
+import { Button, Card, Form, InputGroup, Spinner } from 'react-bootstrap';
+import { useState } from 'react';
+import { uploadFromDropbox } from '@/features/dropbox/api.ts';
+import { DataType, UploadParams } from '@/types.ts';
+import * as yup from 'yup';
+import { useToast } from '@/features/toast';
+import {
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { ToastType } from '@/features/toast/types.ts';
+import { MdDelete } from 'react-icons/md';
+import { DropboxListModal } from '@/features/dropbox/components/DropboxListModal.tsx';
+
+interface UploadFormInputs {
+  path: string;
+  type: DataType;
+  mappings: MappingInputs[];
+}
+
+interface MappingInputs {
+  destination: string;
+  source: string;
+  transformation: string;
+}
+
+const schema = yup.object().shape({
+  type: yup
+    .mixed<DataType>()
+    .oneOf(Object.values(DataType))
+    .required('Type is required'),
+  mappings: yup.mixed<MappingInputs[]>().required(),
+  path: yup.string().required('Path is required'),
+});
 
 export const UploadFromDropbox = () => {
-  const [dropboxList, setDropboxList] = useState<DropboxListItem[]>([]);
-  const [isLoadingList, setIsLoadingList] = useState(false);
-  const [path, setPath] = useState<string>('');
+  const { showToast } = useToast();
+  const [showDropboxModal, setShowDropboxModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLoadingList(true);
-    getDropboxListFolder(path).then((value) => {
-      setDropboxList(value.data);
-      setIsLoadingList(false);
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      type: DataType.DEFAULT_CSV,
+      mappings: [{ destination: '', source: '', transformation: '' }],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'mappings',
+  });
+
+  const onSubmit: SubmitHandler<UploadFormInputs> = async (data) => {
+    console.log(data);
+
+    const mappings: string[] = [];
+
+    data.mappings.map((item) => {
+      mappings.push(
+        `${item.destination}:${item.source}:${item.transformation}`,
+      );
     });
-  }, [path]);
 
-  const goFileDirectory = (path: string) => {
-    setPath(path);
+    const params: UploadParams = {
+      type: data.type,
+      mappings: mappings,
+    };
+
+    setIsLoading(true);
+
+    try {
+      const response = await uploadFromDropbox(data.path, params);
+
+      if (response.status == 200) {
+        showToast({
+          title: 'Success!',
+          message: 'File from Dropbox uploaded successfully',
+          type: ToastType.SUCCESS,
+        });
+      }
+      if (response.status == 208) {
+        showToast({
+          title: 'Error!',
+          message: response.data.error,
+          type: ToastType.WARNING,
+        });
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+
+      if (error instanceof Error) {
+        showToast({
+          title: 'Error',
+          message: error.message,
+          type: ToastType.DANGER,
+        });
+      }
+      setIsLoading(false);
+    }
   };
 
-  const goPrevDirectory = () => {
-    const prevPath = path.slice(0, path.lastIndexOf('/'));
-    setPath(prevPath);
+  const handleCloseDropboxModal = () => {
+    setShowDropboxModal(false);
+  };
+  const handleShowDropboxModal = () => {
+    setShowDropboxModal(true);
+  };
+
+  const updatePathField = (value: string) => {
+    setValue('path', value, { shouldValidate: true });
+  };
+
+  const addMappingField = () => {
+    append({ destination: '', source: '', transformation: '' });
   };
 
   return (
@@ -33,62 +130,107 @@ export const UploadFromDropbox = () => {
       <Card.Body>
         <Card.Title>Ingest from Dropbox</Card.Title>
 
-        <Table bordered hover>
-          <thead>
-            <tr>
-              <th>Path</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoadingList && (
-              <tr>
-                <td>
-                  <div className="d-flex align-items-center">
-                    <Spinner
-                      animation="border"
-                      variant="primary"
-                      size="sm"
-                      className={'me-2'}
-                    />
-                    <span>Loading...</span>
-                  </div>
-                </td>
-              </tr>
-            )}
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group className="mb-3" controlId="type">
+            <Form.Label>Type</Form.Label>
+            <Controller
+              name="type"
+              control={control}
+              render={({ field }) => (
+                <Form.Select {...field}>
+                  {Object.keys(DataType).map((item) => {
+                    return (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+              )}
+            />
+          </Form.Group>
 
-            {!isLoadingList && path && (
-              <tr>
-                <td onClick={() => goPrevDirectory()} role="button">
-                  <IoReturnUpBackSharp />
-                  <span className={'ms-2'}>...</span>
-                </td>
-              </tr>
-            )}
+          <Form.Group className="mb-3">
+            <Form.Label>Mappings</Form.Label>
 
-            {!isLoadingList &&
-              dropboxList !== null &&
-              dropboxList.map((item, index) => (
-                <tr key={`dropbox-list-item-${index}`}>
-                  {item.type == DropboxListItemType.DIRECTORY && (
-                    <td
-                      onClick={() => goFileDirectory(item.path)}
-                      role="button"
-                    >
-                      <GoFileDirectoryFill />
-                      <span className={'ms-2'}>{item.path}</span>
-                    </td>
-                  )}
+            {fields.map((item, index) => (
+              <InputGroup key={item.id} className="mb-3">
+                <Form.Control
+                  id={`destination-${item.id}`}
+                  placeholder={'Destination name of the column'}
+                  {...register(`mappings.${index}.destination`)}
+                />
+                <Form.Control
+                  id={`source-${item.id}`}
+                  placeholder={'Source name of the column'}
+                  {...register(`mappings.${index}.source`)}
+                />
+                <Form.Control
+                  id={`transformation-${item.id}`}
+                  placeholder={'Transformation'}
+                  {...register(`mappings.${index}.transformation`)}
+                />
+                <Button
+                  variant="outline-secondary"
+                  onClick={() => remove(index)}
+                >
+                  <MdDelete />
+                </Button>
+              </InputGroup>
+            ))}
 
-                  {item.type == DropboxListItemType.FILE && (
-                    <td role="button">
-                      <FaRegFile />
-                      <span className={'ms-2'}>{item.path}</span>
-                    </td>
-                  )}
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+            <div>
+              <Button
+                variant={'secondary'}
+                type={'button'}
+                onClick={addMappingField}
+              >
+                Add item
+              </Button>
+            </div>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="path">
+            <Form.Label>Path</Form.Label>
+            <Controller
+              name="path"
+              control={control}
+              render={({ field }) => (
+                <InputGroup>
+                  <Form.Control {...field} isInvalid={!!errors.path} />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={handleShowDropboxModal}
+                  >
+                    Browse
+                  </Button>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.path?.message}
+                  </Form.Control.Feedback>
+                </InputGroup>
+              )}
+            />
+          </Form.Group>
+
+          {!isLoading && (
+            <Button variant="primary" type="submit">
+              Upload
+            </Button>
+          )}
+
+          {isLoading && (
+            <Button variant="primary" disabled>
+              <Spinner as="span" animation="border" size="sm" role="status" />
+              <span className="ms-1">Loading...</span>
+            </Button>
+          )}
+        </Form>
+
+        <DropboxListModal
+          show={showDropboxModal}
+          onClose={handleCloseDropboxModal}
+          onFileSelect={updatePathField}
+        />
       </Card.Body>
     </Card>
   );

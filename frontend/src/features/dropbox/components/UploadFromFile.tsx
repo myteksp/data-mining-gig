@@ -1,4 +1,4 @@
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
+import { Button, Card, Form, InputGroup, Spinner } from 'react-bootstrap';
 import {
   Controller,
   SubmitHandler,
@@ -12,6 +12,7 @@ import { upload } from './../api.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { MdDelete } from 'react-icons/md';
+import { useState } from 'react';
 
 interface UploadFormInputs {
   file: FileList;
@@ -46,6 +47,7 @@ const schema = yup.object().shape({
 
 export const UploadFromFile = () => {
   const { showToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -81,6 +83,8 @@ export const UploadFromFile = () => {
       mappings: mappings,
     };
 
+    setIsLoading(true);
+
     try {
       const response = await upload(data.file[0], params);
 
@@ -98,6 +102,7 @@ export const UploadFromFile = () => {
           type: ToastType.WARNING,
         });
       }
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
 
@@ -108,6 +113,7 @@ export const UploadFromFile = () => {
           type: ToastType.DANGER,
         });
       }
+      setIsLoading(false);
     }
   };
 
@@ -140,20 +146,23 @@ export const UploadFromFile = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="mappings">
+          <Form.Group className="mb-3">
             <Form.Label>Mappings</Form.Label>
 
             {fields.map((item, index) => (
               <InputGroup key={item.id} className="mb-3">
                 <Form.Control
+                  id={`destination-${item.id}`}
                   placeholder={'Destination name of the column'}
                   {...register(`mappings.${index}.destination`)}
                 />
                 <Form.Control
+                  id={`source-${item.id}`}
                   placeholder={'Source name of the column'}
                   {...register(`mappings.${index}.source`)}
                 />
                 <Form.Control
+                  id={`transformation-${item.id}`}
                   placeholder={'Transformation'}
                   {...register(`mappings.${index}.transformation`)}
                 />
@@ -189,9 +198,19 @@ export const UploadFromFile = () => {
               {errors.file?.message}
             </Form.Control.Feedback>
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Upload
-          </Button>
+
+          {!isLoading && (
+            <Button variant="primary" type="submit">
+              Upload
+            </Button>
+          )}
+
+          {isLoading && (
+            <Button variant="primary" disabled>
+              <Spinner as="span" animation="border" size="sm" role="status" />
+              <span className="ms-1">Loading...</span>
+            </Button>
+          )}
         </Form>
       </Card.Body>
     </Card>

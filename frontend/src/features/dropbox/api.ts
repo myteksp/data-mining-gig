@@ -48,6 +48,9 @@ export const getSearch = (params: SearchParams) => {
 };
 
 export const uploadFromDropbox = (path: string, params: UploadParams) => {
+  const formData = new FormData();
+  formData.append('path', path);
+
   const urlParams = new URLSearchParams();
   urlParams.append('type', params.type);
 
@@ -55,7 +58,7 @@ export const uploadFromDropbox = (path: string, params: UploadParams) => {
     urlParams.append(`mappings`, value);
   });
 
-  return axiosInstance.post('/uploads/upload', path, {
+  return axiosInstance.post('/uploads/ingestFromDropBox', formData, {
     params: urlParams,
   });
 };
