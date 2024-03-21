@@ -1,11 +1,18 @@
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import { getMappings, getSearch } from './../api.ts';
+import { getExportToDropbox, getMappings, getSearch } from './../api.ts';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { EnrichmentMethod, FilterType, SearchParams } from '@/types.ts';
+import {
+  EnrichmentMethod,
+  ExportParams,
+  FilterType,
+  SearchParams,
+} from '@/types.ts';
 import { SearchResults } from './SearchResults.tsx';
+import { ToastType } from '@/features/toast/types.ts';
+import { useToast } from '@/features/toast';
 
-interface SearchFormInputs {
+interface FormFormInputs {
   startNode: string;
   queryField: FilterType;
   joinOn: string;
@@ -14,12 +21,16 @@ interface SearchFormInputs {
   skipNumber: number;
   limitNumber: number;
   queryString: string;
+  path: string;
 }
 
 export const Search = () => {
+  const { showToast } = useToast();
+
   const [mappings, setMappings] = useState<string[] | null>(null);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isExport, setIsExport] = useState(false);
 
   useEffect(() => {
     getMappings().then((value) => {
@@ -28,7 +39,7 @@ export const Search = () => {
     });
   }, []);
 
-  const { control, setValue, handleSubmit } = useForm<SearchFormInputs>({
+  const { control, setValue, handleSubmit } = useForm<FormFormInputs>({
     defaultValues: {
       startNode: 'ALL',
       queryField: FilterType.CONTAINS,
@@ -38,10 +49,19 @@ export const Search = () => {
       skipNumber: 0,
       limitNumber: 100,
       queryString: '',
+      path: '',
     },
   });
 
-  const onSubmit: SubmitHandler<SearchFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<FormFormInputs> = (data) => {
+    if (isExport) {
+      onExport(data);
+    } else {
+      onSearch(data);
+    }
+  };
+
+  const onSearch = (data: FormFormInputs) => {
     const params: SearchParams = {
       filter: data.queryString,
       filterType: data.queryField,
@@ -76,15 +96,56 @@ export const Search = () => {
     }
   };
 
+  const onExport = async (data: FormFormInputs) => {
+    const params: ExportParams = {
+      filter: data.queryString,
+      filterType: data.queryField,
+      enrichmentMethod: data.enrichmentMode,
+      joinOn: data.joinOn,
+      maxDepth: data.enrichmentDepthNumber,
+      path: data.path,
+    };
+
+    if (data.startNode !== 'ALL') {
+      params.recordType = data.startNode;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await getExportToDropbox(params);
+
+      if (response.status == 200) {
+        showToast({
+          title: 'Success!',
+          message: 'Export to Dropbox completed successfully',
+          type: ToastType.SUCCESS,
+        });
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+
+      if (error instanceof Error) {
+        showToast({
+          title: 'Error',
+          message: error.message,
+          type: ToastType.DANGER,
+        });
+      }
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Search</Card.Title>
+        <Card.Title>Search and Export</Card.Title>
 
         <Form onSubmit={handleSubmit(onSubmit)} className={'mb-3'}>
           <Row>
             <Col>
-              <Form.Group className="mb-3" controlId="search-start-node">
+              <Form.Group className="mb-3" controlId="start-node">
                 <Form.Label>Select column to search</Form.Label>
                 <Controller
                   name="startNode"
@@ -104,7 +165,7 @@ export const Search = () => {
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group className="mb-3" controlId="search-query-field">
+              <Form.Group className="mb-3" controlId="query-field">
                 <Form.Label>Select query type</Form.Label>
                 <Controller
                   name="queryField"
@@ -124,7 +185,7 @@ export const Search = () => {
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group className="mb-3" controlId="search-join-on">
+              <Form.Group className="mb-3" controlId="join-on">
                 <Form.Label>
                   Select on which field to search commonalities
                 </Form.Label>
@@ -148,7 +209,7 @@ export const Search = () => {
 
           <Row>
             <Col>
-              <Form.Group className="mb-3" controlId="search-enrichment-mode">
+              <Form.Group className="mb-3" controlId="enrichment-mode">
                 <Form.Label>Select enrichment mode</Form.Label>
                 <Controller
                   name="enrichmentMode"
@@ -168,10 +229,7 @@ export const Search = () => {
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group
-                className="mb-3"
-                controlId="search-enrichment-depth-number"
-              >
+              <Form.Group className="mb-3" controlId="enrichment-depth-number">
                 <Form.Label>Enrichment depth</Form.Label>
                 <Controller
                   name="enrichmentDepthNumber"
@@ -183,34 +241,7 @@ export const Search = () => {
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group className="mb-3" controlId="search-skip-number">
-                <Form.Label>Skip</Form.Label>
-                <Controller
-                  name="skipNumber"
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Control {...field} type="text" />
-                  )}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              <Form.Group className="mb-3" controlId="search-limit-number">
-                <Form.Label>Limit</Form.Label>
-                <Controller
-                  name="limitNumber"
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Control {...field} type="text" />
-                  )}
-                />
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group className="mb-3" controlId="search-query-string">
+              <Form.Group className="mb-3" controlId="query-string">
                 <Form.Label>Query</Form.Label>
                 <Controller
                   name="queryString"
@@ -223,8 +254,57 @@ export const Search = () => {
             </Col>
           </Row>
 
+          {!isExport && (
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="skip-number">
+                  <Form.Label>Skip</Form.Label>
+                  <Controller
+                    name="skipNumber"
+                    control={control}
+                    render={({ field }) => (
+                      <Form.Control {...field} type="text" />
+                    )}
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="limit-number">
+                  <Form.Label>Limit</Form.Label>
+                  <Controller
+                    name="limitNumber"
+                    control={control}
+                    render={({ field }) => (
+                      <Form.Control {...field} type="text" />
+                    )}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+          )}
+
+          {isExport && (
+            <Form.Group className="mb-3" controlId="path">
+              <Form.Label>Path</Form.Label>
+              <Controller
+                name="path"
+                control={control}
+                render={({ field }) => <Form.Control {...field} type="text" />}
+              />
+            </Form.Group>
+          )}
+
+          <Form.Group className="mb-3">
+            <Form.Check
+              defaultChecked={isExport}
+              type="switch"
+              label="Is export?"
+              onChange={(event) => setIsExport(event.target.checked)}
+            />
+          </Form.Group>
+
           <Button variant="primary" type="submit">
-            Search
+            {isExport ? 'Export to Dropbox' : 'Search'}
           </Button>
         </Form>
 

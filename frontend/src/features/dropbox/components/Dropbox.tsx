@@ -32,7 +32,7 @@ export const Dropbox = () => {
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="search">Search</Nav.Link>
+                <Nav.Link eventKey="search">Search and Export</Nav.Link>
               </Nav.Item>
             </Nav>
           </Col>

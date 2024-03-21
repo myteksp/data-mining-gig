@@ -2,6 +2,7 @@ import { axiosInstance } from '@/features/axios';
 import {
   ConnectionStatus,
   DropboxListItem,
+  ExportParams,
   SearchParams,
   UnfinishedUpload,
   UploadParams,
@@ -43,6 +44,12 @@ export const getMappings = () => {
 
 export const getSearch = (params: SearchParams) => {
   return axiosInstance.get('/search/search', {
+    params: params,
+  });
+};
+
+export const getExportToDropbox = (params: ExportParams) => {
+  return axiosInstance.get('/search/exportToDropbox', {
     params: params,
   });
 };

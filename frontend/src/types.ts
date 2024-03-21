@@ -61,6 +61,16 @@ export interface SearchParams {
   limit: number;
 }
 
+export interface ExportParams {
+  recordType?: string;
+  filter: string;
+  filterType: FilterType;
+  enrichmentMethod: EnrichmentMethod;
+  joinOn: string;
+  maxDepth: number;
+  path: string;
+}
+
 export interface UploadParams {
   type: DataType;
   mappings: string[];
