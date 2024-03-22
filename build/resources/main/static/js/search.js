@@ -53,7 +53,7 @@ $(function(){
                     params.recordType = startNode;
                 }
                 $.ajax({
-                    url: '/uploads/search?' + $.param(params),
+                    url: '/search/search?' + $.param(params),
                     method: 'get',
                     dataType: 'json',
                     success: function(data){

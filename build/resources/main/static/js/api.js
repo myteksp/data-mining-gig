@@ -38,14 +38,24 @@ $(function(){
     var uploads = {
         getMappings: function(callBack){
             $.ajax({
-                url: '/uploads/getMappings',
+                url: '/search/getMappings',
                 method: 'get',
                 dataType: 'json',
                 success: function(data){
                     callBack(data);
                 }
             });
-        }
+        },
+        listUnfinishedUploads: function(callBack){
+            $.ajax({
+                url: '/uploads/listUnfinishedUploads',
+                method: 'get',
+                dataType: 'json',
+                success: function(data){
+                    callBack(data);
+                }
+            });
+        },
     };
     API.uploads = uploads;
 });

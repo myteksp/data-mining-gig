@@ -1,72 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Data processor</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>-->
+    <script type="module" crossorigin src="frontend/js/scripts.js"></script>
+    <link rel="stylesheet" crossorigin href="frontend/css/index.css">
 </head>
 <body>
-<div id="drop-box-container"></div>
-<div id="search-container">
-    <form action="javascript:void(0);">
-        <fieldset>
-            <div>
-                <label for="search-start-node">Select column to search</label>
-                <select name="speed" id="search-start-node">
-                    <option selected value="ALL">ALL</option>
-                </select>
-            </div>
 
-            <div>
-                <label for="search-query-field">Select query type</label>
-                <select name="speed" id="search-query-field">
-                    <option selected value="CONTAINS">CONTAINS</option>
-                    <option value="STARTS_WITH">STARTS_WITH</option>
-                    <option value="ENDS_WITH">ENDS_WITH</option>
-                    <option value="EQUALS">EQUALS</option>
-                    <option value="NONE">NONE</option>
-                </select>
-            </div>
-            <div>
-                <label for="search-join-on">Select on which field to search commonalities</label>
-                <select name="join" id="search-join-on">
-                </select>
-            </div>
-            <div>
-                <label for="search-enrichment-mode">Select enrichment mode</label>
-                <select name="speed" id="search-enrichment-mode">
-                    <option selected value="DEEP">DEEP</option>
-                    <option value="SHALLOW">SHALLOW</option>
-                    <option value="NONE">NONE</option>
-                </select>
-            </div>
-            <div>
-                <label for="search-enrichment-depth-number">Enrichment depth</label>
-                <input type="text" id="search-enrichment-depth-number" name="enrichment depth" value="10">
-            </div>
-            <div>
-                <label for="search-skip-number">Skip</label>
-                <input type="text" id="search-skip-number" name="skip" value="0">
-            </div>
-            <div>
-                <label for="search-limit-number">Limit</label>
-                <input type="text" id="search-limit-number" name="limit" value="100">
-            </div>
-            <div>
-                <label for="search-query-string">Query</label>
-                <input type="text" id="search-query-string" name="query" value="">
-            </div>
-            <button id="search-button">Search</button>
-        </fieldset>
-    </form>
-    <div id="search-button-results-container" >
+<div id="dropbox-root"></div>
 
-    </div>
-</div>
-<iframe src="/swagger-ui/index.html#/uploads-controller/upload" height="800px" width="100%"></iframe>
-<script src="/js/api.js"></script>
-<script src="/js/dropbox.js"></script>
-<script src="/js/search.js"></script>
+<!--<iframe src="/swagger-ui/index.html#/uploads-controller/upload" height="800px" width="100%"></iframe>-->
+
+<!--<script src="/js/api.js"></script>-->
+<!--<script src="/js/dropbox.js"></script>-->
+<!--<script src="/js/search.js"></script>-->
 </body>
 </html>

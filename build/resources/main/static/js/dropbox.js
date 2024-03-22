@@ -1,6 +1,6 @@
 $(function(){
     var displayConnectDropboxButton = function(url){
-        $('#drop-box-container').append('<a href="' + url + '">Connect Dropbox</a>');
+        $('#drop-box-container').append('<a href="' + url + '" class="btn btn-outline-primary">Connect Dropbox</a>');
     };
     var displayDropBoxBrowser = function(){
         var container = $('#drop-box-container');
