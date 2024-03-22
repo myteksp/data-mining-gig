@@ -16,7 +16,7 @@ export const Dropbox = () => {
 
       <Tab.Container defaultActiveKey="uploadFromFile">
         <Row>
-          <Col sm={2}>
+          <Col lg={2} className={'mb-3'}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item>
                 <Nav.Link eventKey="uploadFromFile">Ingest from file</Nav.Link>
@@ -36,7 +36,7 @@ export const Dropbox = () => {
               </Nav.Item>
             </Nav>
           </Col>
-          <Col sm={10}>
+          <Col lg={10}>
             <Tab.Content>
               <Tab.Pane eventKey="uploadFromFile">
                 <UploadFromFile />

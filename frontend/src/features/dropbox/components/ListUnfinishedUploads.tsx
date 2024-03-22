@@ -23,11 +23,13 @@ export const ListUnfinishedUploads = () => {
       <Card.Body>
         <Card.Title>Active ingestions</Card.Title>
 
-        <Table striped bordered>
+        <Table striped bordered responsive>
           <thead>
             <tr>
               <th>Filename</th>
-              <th>Progress</th>
+              <th className={'w-50'} style={{ minWidth: '250px' }}>
+                Progress
+              </th>
             </tr>
           </thead>
           <tbody>

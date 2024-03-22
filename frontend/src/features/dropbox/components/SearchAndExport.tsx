@@ -144,7 +144,7 @@ export const SearchAndExport = () => {
 
         <Form onSubmit={handleSubmit(onSubmit)} className={'mb-3'}>
           <Row>
-            <Col>
+            <Col lg>
               <Form.Group className="mb-3" controlId="start-node">
                 <Form.Label>Select column to search</Form.Label>
                 <Controller
@@ -164,7 +164,7 @@ export const SearchAndExport = () => {
                 />
               </Form.Group>
             </Col>
-            <Col>
+            <Col lg>
               <Form.Group className="mb-3" controlId="query-field">
                 <Form.Label>Select query type</Form.Label>
                 <Controller
@@ -184,7 +184,7 @@ export const SearchAndExport = () => {
                 />
               </Form.Group>
             </Col>
-            <Col>
+            <Col lg>
               <Form.Group className="mb-3" controlId="join-on">
                 <Form.Label>
                   Select on which field to search commonalities
@@ -208,7 +208,7 @@ export const SearchAndExport = () => {
           </Row>
 
           <Row>
-            <Col>
+            <Col md>
               <Form.Group className="mb-3" controlId="enrichment-mode">
                 <Form.Label>Select enrichment mode</Form.Label>
                 <Controller
@@ -228,7 +228,7 @@ export const SearchAndExport = () => {
                 />
               </Form.Group>
             </Col>
-            <Col>
+            <Col md>
               <Form.Group className="mb-3" controlId="enrichment-depth-number">
                 <Form.Label>Enrichment depth</Form.Label>
                 <Controller
@@ -240,7 +240,7 @@ export const SearchAndExport = () => {
                 />
               </Form.Group>
             </Col>
-            <Col>
+            <Col md>
               <Form.Group className="mb-3" controlId="query-string">
                 <Form.Label>Query</Form.Label>
                 <Controller
