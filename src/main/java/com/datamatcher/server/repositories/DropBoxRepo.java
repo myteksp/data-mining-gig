@@ -42,6 +42,7 @@ public final class DropBoxRepo {
     private final String userName;
     private final String password;
     private final String uri;
+    private final String dropBoxOauthRedirect;
     @Autowired
     public DropBoxRepo(
             @Value("${dropbox.appKey}") final String appKey,
@@ -49,7 +50,9 @@ public final class DropBoxRepo {
             @Value("${neo4j.uri}") final String uri,
             @Value("${neo4j.user}") final String userName,
             @Value("${neo4j.password}") final String password,
-            @Value("${neo4j.db}") final String db) {
+            @Value("${neo4j.db}") final String db,
+            @Value("${dropbox.redirectUrl}") final String dropBoxOauthRedirect) {
+        this.dropBoxOauthRedirect = dropBoxOauthRedirect;
         this.uri = uri;
         this.userName = userName;
         this.password = password;
@@ -60,7 +63,7 @@ public final class DropBoxRepo {
     }
 
     public final String getRedirectUri(){
-        return "https://artificial-ilyssa-kaya-data-processor.koyeb.app/dropbox/authorize";
+        return dropBoxOauthRedirect;
     }
 
     private final void saveCredentials(final String accessToken, final Long expiresAt, final String refreshToken){

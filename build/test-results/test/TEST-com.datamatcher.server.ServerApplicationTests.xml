@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.datamatcher.server.ServerApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-03-22T20:42:19" hostname="m-dmitryp-ZKBJ" time="0.759">
+<testsuite name="com.datamatcher.server.ServerApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-03-22T20:57:05" hostname="m-dmitryp-ZKBJ" time="0.82">
   <properties/>
-  <testcase name="contextLoads()" classname="com.datamatcher.server.ServerApplicationTests" time="0.759"/>
-  <system-out><![CDATA[23:42:17.084 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.datamatcher.server.ServerApplicationTests]: ServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-23:42:17.173 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.datamatcher.server.ServerApplication for test class com.datamatcher.server.ServerApplicationTests
+  <testcase name="contextLoads()" classname="com.datamatcher.server.ServerApplicationTests" time="0.82"/>
+  <system-out><![CDATA[23:57:03.140 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.datamatcher.server.ServerApplicationTests]: ServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+23:57:03.225 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.datamatcher.server.ServerApplication for test class com.datamatcher.server.ServerApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -13,11 +13,11 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.2)
 
-2024-03-22T23:42:17.439+03:00  INFO 75250 --- [    Test worker] c.d.server.ServerApplicationTests        : Starting ServerApplicationTests using Java 21 with PID 75250 (started by dmitry.paradny in /Users/dmitry.paradny/Desktop/ItayBullShit)
-2024-03-22T23:42:17.440+03:00  INFO 75250 --- [    Test worker] c.d.server.ServerApplicationTests        : No active profile set, falling back to 1 default profile: "default"
-2024-03-22T23:42:19.019+03:00  INFO 75250 --- [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
-2024-03-22T23:42:19.397+03:00  INFO 75250 --- [    Test worker] o.neo4j.driver.internal.DriverFactory    : Direct driver instance 2050328083 created for server address localhost:7687
-2024-03-22T23:42:19.440+03:00  INFO 75250 --- [    Test worker] c.d.server.ServerApplicationTests        : Started ServerApplicationTests in 2.151 seconds (process running for 3.023)
+2024-03-22T23:57:03.574+03:00  INFO 79124 --- [    Test worker] c.d.server.ServerApplicationTests        : Starting ServerApplicationTests using Java 21 with PID 79124 (started by dmitry.paradny in /Users/dmitry.paradny/Desktop/ItayBullShit)
+2024-03-22T23:57:03.575+03:00  INFO 79124 --- [    Test worker] c.d.server.ServerApplicationTests        : No active profile set, falling back to 1 default profile: "default"
+2024-03-22T23:57:05.221+03:00  INFO 79124 --- [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-03-22T23:57:05.541+03:00  INFO 79124 --- [    Test worker] o.neo4j.driver.internal.DriverFactory    : Direct driver instance 1907982059 created for server address localhost:7687
+2024-03-22T23:57:05.584+03:00  INFO 79124 --- [    Test worker] c.d.server.ServerApplicationTests        : Started ServerApplicationTests in 2.243 seconds (process running for 3.304)
 ]]></system-out>
   <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/Users/dmitry.paradny/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.11/f9cb566608fbac6bc7bf54901a7aa11543a989ee/byte-buddy-agent-1.14.11.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
