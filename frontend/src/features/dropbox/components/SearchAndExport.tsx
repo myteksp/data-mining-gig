@@ -24,7 +24,7 @@ interface FormFormInputs {
   path: string;
 }
 
-export const Search = () => {
+export const SearchAndExport = () => {
   const { showToast } = useToast();
 
   const [mappings, setMappings] = useState<string[] | null>(null);
@@ -303,16 +303,18 @@ export const Search = () => {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" disabled={isLoading}>
             {isExport ? 'Export to Dropbox' : 'Search'}
           </Button>
         </Form>
 
-        <SearchResults
-          isLoading={isLoading}
-          mappings={mappings}
-          searchResults={searchResults}
-        />
+        {!isExport && (
+          <SearchResults
+            isLoading={isLoading}
+            mappings={mappings}
+            searchResults={searchResults}
+          />
+        )}
       </Card.Body>
     </Card>
   );

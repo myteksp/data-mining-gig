@@ -1,5 +1,5 @@
 import { Connect } from './Connect.tsx';
-import { Search } from './Search.tsx';
+import { SearchAndExport } from './SearchAndExport.tsx';
 import { ListUnfinishedUploads } from './ListUnfinishedUploads.tsx';
 import { UploadFromFile } from './UploadFromFile.tsx';
 import { Col, Nav, Row, Tab } from 'react-bootstrap';
@@ -48,7 +48,7 @@ export const Dropbox = () => {
                 <ListUnfinishedUploads />
               </Tab.Pane>
               <Tab.Pane eventKey="search">
-                <Search />
+                <SearchAndExport />
               </Tab.Pane>
             </Tab.Content>
           </Col>

@@ -32,7 +32,17 @@ const schema = yup.object().shape({
     .mixed<DataType>()
     .oneOf(Object.values(DataType))
     .required('Type is required'),
-  mappings: yup.mixed<MappingInputs[]>().required(),
+  mappings: yup
+    .array()
+    .of(
+      yup.object().shape({
+        destination: yup.string().required('Mappings is required'),
+        source: yup.string().required('Mappings is required'),
+        transformation: yup.string().required('Mappings is required'),
+      }),
+    )
+    .min(1, 'Mappings is required')
+    .required(),
   path: yup.string().required('Path is required'),
 });
 
@@ -43,6 +53,7 @@ export const UploadFromDropbox = () => {
 
   const {
     register,
+    getValues,
     control,
     handleSubmit,
     setValue,
@@ -61,8 +72,6 @@ export const UploadFromDropbox = () => {
   });
 
   const onSubmit: SubmitHandler<UploadFormInputs> = async (data) => {
-    console.log(data);
-
     const mappings: string[] = [];
 
     data.mappings.map((item) => {
@@ -158,16 +167,27 @@ export const UploadFromDropbox = () => {
                 <Form.Control
                   id={`destination-${item.id}`}
                   placeholder={'Destination name of the column'}
+                  isInvalid={
+                    !!(errors.mappings && errors.mappings[index]?.destination)
+                  }
                   {...register(`mappings.${index}.destination`)}
                 />
                 <Form.Control
                   id={`source-${item.id}`}
                   placeholder={'Source name of the column'}
+                  isInvalid={
+                    !!(errors.mappings && errors.mappings[index]?.source)
+                  }
                   {...register(`mappings.${index}.source`)}
                 />
                 <Form.Control
                   id={`transformation-${item.id}`}
                   placeholder={'Transformation'}
+                  isInvalid={
+                    !!(
+                      errors.mappings && errors.mappings[index]?.transformation
+                    )
+                  }
                   {...register(`mappings.${index}.transformation`)}
                 />
                 <Button
@@ -178,6 +198,12 @@ export const UploadFromDropbox = () => {
                 </Button>
               </InputGroup>
             ))}
+
+            {!getValues('mappings').length && (
+              <div className={'invalid-feedback d-block mb-3'}>
+                {errors.mappings?.root?.message}
+              </div>
+            )}
 
             <div>
               <Button
