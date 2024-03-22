@@ -60,7 +60,7 @@ public final class DropBoxRepo {
     }
 
     public final String getRedirectUri(){
-        return "http://localhost:8080/dropbox/authorize";
+        return "https://artificial-ilyssa-kaya-data-processor.koyeb.app/dropbox/authorize";
     }
 
     private final void saveCredentials(final String accessToken, final Long expiresAt, final String refreshToken){
