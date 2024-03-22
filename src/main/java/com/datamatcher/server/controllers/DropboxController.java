@@ -37,7 +37,8 @@ public final class DropboxController {
     public final RedirectView authorize(@RequestParam(value = "code") final String code){
         service.reauthorizeClient(code);
         final RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("http://localhost:8080");
+        redirectView.setContextRelative(true);
+        redirectView.setUrl("/");
         return redirectView;
     }
 
