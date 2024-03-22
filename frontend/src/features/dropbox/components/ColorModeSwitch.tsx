@@ -30,9 +30,9 @@ export const ColorModeSwitch = () => {
       {colorMode == 'dark' ? <FiMoon /> : <FiSun />}
       <Form.Check
         id={'color-mode-switch'}
-        defaultChecked={colorMode == 'dark'}
+        checked={colorMode !== 'dark'}
         type="switch"
-        onClick={modeToggle}
+        onChange={modeToggle}
         className={'ms-2'}
       />
     </div>
