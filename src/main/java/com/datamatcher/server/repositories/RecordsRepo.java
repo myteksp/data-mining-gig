@@ -49,10 +49,11 @@ public final class RecordsRepo {
 
 
     public final UploadResponse createUpload(final UploadResponse upload){
-        final String query = "CREATE (u:UploadTracking {uploadId: $uploadId, fileName: $fileName, dataType: $dataType, mappings: $mappings, isComplete: $isComplete, processed: $processed, outOf: $outOf});";
+        final String query = "CREATE (u:UploadTracking {rowsCount: $rowsCount, uploadId: $uploadId, fileName: $fileName, dataType: $dataType, mappings: $mappings, isComplete: $isComplete, processed: $processed, outOf: $outOf});";
         logger.info("Creating upload record: " + query);
         try (final var session = driver.session(SessionConfig.builder().withDatabase(database).build())) {
             session.executeWrite(tx-> tx.run(query, Map.of("uploadId", upload.uploadId,
+                    "rowsCount", 0,
                     "fileName", upload.fileName,
                     "dataType", upload.dataType.toString(),
                     "mappings", JSON.toJson(upload.mappings),
@@ -80,7 +81,8 @@ public final class RecordsRepo {
                         DataType.valueOf(v.get("dataType").asString()),
                         v.get("isComplete").asBoolean(),
                         v.get("processed").asLong(),
-                        v.get("outOf").asLong()));
+                        v.get("outOf").asLong(),
+                        v.get("rowsCount").asInt()));
             }
         }catch (final Throwable cause){
             logger.error("Failed to find uploads. Query: {}. Cause:", query, cause);
@@ -96,7 +98,7 @@ public final class RecordsRepo {
             final List<Record> lst = session.run(query, Map.of("id", id)).list();
             if (lst.isEmpty())
                 return null;
-            record = lst.get(0);
+            record = lst.getFirst();
         }catch (final Throwable cause){
             logger.error("Failed to find uploads. Query: {}. Cause:", query, cause);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find uploads", cause);
@@ -110,17 +112,18 @@ public final class RecordsRepo {
                 DataType.valueOf(v.get("dataType").asString()),
                 v.get("isComplete").asBoolean(),
                 v.get("processed").asLong(),
-                v.get("outOf").asLong());
+                v.get("outOf").asLong(),
+                v.get("rowsCount").asInt());
         if(!v.get("error").isNull()){
             response.error = v.get("error").asString();
         }
         return response;
     }
 
-    public final void updateUploadProgress(final String id, final long progress){
-        final String query = "MATCH (n:UploadTracking) WHERE n.uploadId=$id SET n.processed= $processed";
+    public final void updateUploadProgress(final String id, final long progress, final int recordsProcessed){
+        final String query = "MATCH (n:UploadTracking) WHERE n.uploadId=$id SET n.processed= $processed, n.rowsCount = n.rowsCount + $recordsProcessed";
         try (final var session = driver.session(SessionConfig.builder().withDatabase(database).build())) {
-            session.executeWrite(tx-> tx.run(query, Map.of("id", id, "processed", progress)).consume());
+            session.executeWrite(tx-> tx.run(query, Map.of("id", id, "processed", progress, "recordsProcessed", recordsProcessed)).consume());
         }catch (final Throwable cause){
             logger.error("Failed to update progress. Query: {}. Cause:", query, cause);
         }
@@ -226,11 +229,11 @@ public final class RecordsRepo {
     }
 
 
-    public final void saveRecord(final List<DataRecord> records){
+    public final void saveRecord(final List<DataRecord> records, final String uploadId){
         if (records.isEmpty())
             return;
 
-        final Map.Entry<String, Map<String,Object>> query = buildQuery(records);
+        final Map.Entry<String, Map<String,Object>> query = buildQuery(records, uploadId);
         final long startTime = System.currentTimeMillis();
         try (final var session = driver.session(SessionConfig.builder().withDatabase(database).build())) {
             session.executeWrite(tx-> tx.run(query.getKey(), query.getValue()).consume());
@@ -244,7 +247,7 @@ public final class RecordsRepo {
     public static final class ListOfDataMappings extends ArrayList<DataMapping> implements List<DataMapping>{
 
     }
-    private final Map.Entry<String, Map<String,Object>> buildQuery(final List<DataRecord> records_unsorted){
+    private final Map.Entry<String, Map<String,Object>> buildQuery(final List<DataRecord> records_unsorted, final String uploadId){
         final Map<String,Object> params = new HashMap<>(records_unsorted.size() * 2);
         final List<DataRecord> records = records_unsorted.stream().sorted(Comparator.comparing(o -> o.name)).toList();
 
@@ -257,9 +260,9 @@ public final class RecordsRepo {
             stringBuilder.append("MERGE (n").append(index).append(":").append(r.name).append(" {value: $").append(paramName).append("})").append('\n');
         }
 
-        final String paramName = "row";
-        params.put(paramName, Signature.getSignature(records));
-        stringBuilder.append("MERGE (row:ROW_SOURCE {value: $").append(paramName).append("})").append('\n');
+        params.put("row", Signature.getSignature(records));
+        params.put("uploadId", uploadId);
+        stringBuilder.append("MERGE (row:ROW_SOURCE {value: $row, uploadId: $uploadId})").append('\n');
 
         for (int i = 0; i < records.size(); i++) {
             stringBuilder.append("MERGE (n").append(toIndex(i)).append(")").append("<-[:RELATED]-(row)").append('\n');

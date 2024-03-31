@@ -46,7 +46,7 @@ public final class UploadService {
         if (!dropBoxRepo.doesFileExists(path)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "File '" + path + "' is not found in dropbox.");
         }
-        final UploadResponse response = new UploadResponse(path, generateUploadId(type_input, mappings, path, withHeaders), DataMapping.parseMappings(mappings), type_input, false, 0, 0);
+        final UploadResponse response = new UploadResponse(path, generateUploadId(type_input, mappings, path, withHeaders), DataMapping.parseMappings(mappings), type_input, false, 0, 0,0);
         if (repo.getUploadById(response.uploadId) != null){
             throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED, "This file already uploaded.");
         }
@@ -64,24 +64,26 @@ public final class UploadService {
                                          final boolean withHeaders,
                                          final UploadResponse initial_response){
         UploadResponse response = initial_response;
-        response.outOf = tempFile.length();
-        response = repo.createUpload(response);
+        if (response.outOf == 0){
+            response.outOf = tempFile.length();
+            response = repo.createUpload(response);
+        }
         repo.ensureIndexes(response.mappings);
         repo.saveMappings(response.mappings);
         if (type_input == DataType.AUTODETECT){
             response.dataType = autodetect(tempFile);
         }
         final DataType type = response.dataType;
-
         final UploadResponse finalResponse = response;
-
         Thread.startVirtualThread(()->{
             try {
                 if (type == DataType.JSON) {
                     uploadJson(finalResponse.uploadId, finalResponse.mappings, tempFile);
                 } else {
-                    uploadCsv(finalResponse.fileName, finalResponse.uploadId, finalResponse.mappings, tempFile, type, withHeaders);
+                    uploadCsv(finalResponse.fileName, finalResponse.uploadId, finalResponse.mappings, tempFile, type, withHeaders, finalResponse.rowsCount);
                 }
+            }catch (final Throwable cause){
+                logger.error("Failed to save upload: {}", finalResponse, cause);
             }finally {
                 tempFile.delete();
             }
@@ -92,9 +94,11 @@ public final class UploadService {
                                        final List<String> mappings,
                                        final MultipartFile file,
                                        final boolean withHeaders){
-        UploadResponse response = new UploadResponse(file.getOriginalFilename(), generateUploadId(type_input, mappings, file, withHeaders), DataMapping.parseMappings(mappings), type_input, false, 0, 0);
-        if (repo.getUploadById(response.uploadId) != null){
-            throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED, "This file already uploaded.");
+        final String uploadId = generateUploadId(type_input, mappings, file, withHeaders);
+        UploadResponse response = repo.getUploadById(uploadId);
+
+        if (response == null){
+            response = new UploadResponse(file.getOriginalFilename(), uploadId, DataMapping.parseMappings(mappings), type_input, false, 0, 0, 0);
         }
         final File tempFile;
         try {
@@ -177,10 +181,10 @@ public final class UploadService {
                     }
                 }
             }
-            repo.saveRecord(records);
+            repo.saveRecord(records, uploadId);
         }
 
-        repo.updateUploadProgress(uploadId, file.length());
+        repo.updateUploadProgress(uploadId, file.length(), data.size());
         repo.completeUploadProgress(uploadId);
     }
 
@@ -188,6 +192,15 @@ public final class UploadService {
         return repo.listUnfinishedUploads();
     }
 
+    private final void skipRecords(final Iterator<CSVRecord> csvParser, final int size){
+        int counter = 0;
+        while (csvParser.hasNext()){
+            csvParser.next();
+            counter++;
+            if (counter >= size)
+                return ;
+        }
+    }
     private final List<CSVRecord> getBulkOfRecords(final Iterator<CSVRecord> csvParser, final int size){
         final List<CSVRecord> result = new ArrayList<>(size);
         while (csvParser.hasNext()){
@@ -203,7 +216,8 @@ public final class UploadService {
                                  final List<DataMapping> mappings,
                                  final File file,
                                  final DataType dataType,
-                                 final boolean withHeader) {
+                                 final boolean withHeader,
+                                 final int skipRows) {
 
         final CSVParser csvParser;
         try {
@@ -213,8 +227,12 @@ public final class UploadService {
             repo.completeUploadProgressWithError(uploadId, "Failed to open file. Cause: " + cause.getMessage());
             return;
         }
+
         final int bulkSize = 10;
         final Iterator<CSVRecord> iterator = csvParser.iterator();
+        if (skipRows > 0){
+            skipRecords(iterator, skipRows);
+        }
         List<CSVRecord> bulkOfRecords = null;
         long byteCounter = 0;
         if (withHeader) {
@@ -237,13 +255,13 @@ public final class UploadService {
                                 records.add(new DataRecord(e.name, StringTransformer.transform(value, e.transformations)));
                             }
                         }
-                        repo.saveRecord(records);
+                        repo.saveRecord(records, uploadId);
                     }));
                 }
                 for(final Thread t : threads){
                     try {t.join();}catch (final Throwable ignored){}
                 }
-                repo.updateUploadProgress(uploadId, byteCounter);
+                repo.updateUploadProgress(uploadId, byteCounter, bulkOfRecords.size());
                 logger.info("Bulk of {} ingested in {} milliseconds.", bulkSize, (System.currentTimeMillis() - startTime));
             }while (!bulkOfRecords.isEmpty());
         } else {
@@ -266,17 +284,17 @@ public final class UploadService {
                                 records.add(new DataRecord(e.name, StringTransformer.transform(value, e.transformations)));
                             }
                         }
-                        repo.saveRecord(records);
+                        repo.saveRecord(records, uploadId);
                     }));
                 }
                 for(final Thread t : threads){
                     try {t.join();}catch (final Throwable ignored){}
                 }
-                repo.updateUploadProgress(uploadId, byteCounter);
+                repo.updateUploadProgress(uploadId, byteCounter, bulkOfRecords.size());
                 logger.info("Bulk of {} ingested in {} milliseconds.", bulkSize, (System.currentTimeMillis() - startTime));
             }while (!bulkOfRecords.isEmpty());
         }
-        repo.updateUploadProgress(uploadId, file.length());
+        repo.updateUploadProgress(uploadId, file.length(), 0);
         repo.completeUploadProgress(uploadId);
         try {csvParser.close();}catch (final Throwable ignored){}
         logger.info("Upload '{}' completed.", uploadId);

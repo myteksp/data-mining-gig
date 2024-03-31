@@ -14,6 +14,7 @@ public final class UploadResponse {
     public boolean isComplete;
     public long processed;
     public long outOf;
+    public int rowsCount;
 
     public UploadResponse(final String fileName,
                           final String uploadId,
@@ -21,7 +22,8 @@ public final class UploadResponse {
                           final DataType dataType,
                           final boolean isComplete,
                           final long processed,
-                          final long outOf){
+                          final long outOf,
+                          final int rowsCount){
         this.fileName = fileName;
         this.mappings = mappings;
         this.uploadId = uploadId;
@@ -29,6 +31,7 @@ public final class UploadResponse {
         this.isComplete = isComplete;
         this.processed = processed;
         this.outOf = outOf;
+        this.rowsCount = rowsCount;
         this.error = null;
     }
     public UploadResponse(){
@@ -38,29 +41,28 @@ public final class UploadResponse {
     @Override
     public final boolean equals(final Object o) {
         if (this == o) return true;
-        if (!(o instanceof UploadResponse response)) return false;
-        if (!Objects.equals(fileName, response.fileName)) return false;
-        if (!Objects.equals(uploadId, response.uploadId)) return false;
-        if (dataType != response.dataType) return false;
-        return Objects.equals(mappings, response.mappings);
+        if (o == null || getClass() != o.getClass()) return false;
+        UploadResponse that = (UploadResponse) o;
+        return isComplete == that.isComplete && processed == that.processed && outOf == that.outOf && rowsCount == that.rowsCount && Objects.equals(fileName, that.fileName) && Objects.equals(uploadId, that.uploadId) && dataType == that.dataType && Objects.equals(mappings, that.mappings) && Objects.equals(error, that.error);
     }
 
     @Override
     public final int hashCode() {
-        int result = fileName != null ? fileName.hashCode() : 0;
-        result = 31 * result + (uploadId != null ? uploadId.hashCode() : 0);
-        result = 31 * result + (dataType != null ? dataType.hashCode() : 0);
-        result = 31 * result + (mappings != null ? mappings.hashCode() : 0);
-        return result;
+        return Objects.hash(fileName, uploadId, dataType, mappings, error, isComplete, processed, outOf, rowsCount);
     }
 
     @Override
     public final String toString() {
-        return new StringJoiner(", ", UploadResponse.class.getSimpleName() + "[", "]")
-                .add("fileName='" + fileName + "'")
-                .add("uploadId='" + uploadId + "'")
-                .add("dataType=" + dataType)
-                .add("mappings=" + mappings)
-                .toString();
+        return "UploadResponse{" +
+                "fileName='" + fileName + '\'' +
+                ", uploadId='" + uploadId + '\'' +
+                ", dataType=" + dataType +
+                ", mappings=" + mappings +
+                ", error='" + error + '\'' +
+                ", isComplete=" + isComplete +
+                ", processed=" + processed +
+                ", outOf=" + outOf +
+                ", rowsCount=" + rowsCount +
+                '}';
     }
 }
