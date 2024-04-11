@@ -41,15 +41,15 @@ public class SearchService {
         return repo.getMappings();
     }
 
-    public final ResponseEntity<Resource> matchFile(final MultipartFile multipartFile,
-                                                    final String srcColumn,
-                                                    final String dstColumn,
-                                                    final SearchRepo.EnrichmentMethod enrichmentMethod,
-                                                    final String joinOn,
-                                                    final int maxDepth,
-                                                    final DataType src_type,
-                                                    final boolean withHeader) {
-        if (src_type == DataType.JSON){
+    public final String matchFile(final MultipartFile multipartFile,
+                                final String srcColumn,
+                                final String dstColumn,
+                                final SearchRepo.EnrichmentMethod enrichmentMethod,
+                                final List<String> joinOn,
+                                final int maxDepth,
+                                final DataType src_type,
+                                final boolean withHeader) {
+        if (src_type == DataType.JSON) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "JSON is not supported in matching.");
         }
         final File file = multipartToTemp(multipartFile);
@@ -72,7 +72,7 @@ public class SearchService {
         final FileWriter fw;
         try {
             fw = new FileWriter(resultFile);
-        }catch (final Throwable cause){
+        } catch (final Throwable cause) {
             logger.error("Failed to create file writer", cause);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create file writer", cause);
         }
@@ -85,49 +85,63 @@ public class SearchService {
                 .setHeader(header)
                 .build();
         int recordCounter = 0;
-        try (final CSVPrinter printer = new CSVPrinter(fw, csvFormat)) {
-            for (final CSVRecord record : csvParser) {
-                recordCounter++;
-                final String value = transformSourceColumn(record.get(srcColumnName), srcColumn);
-                logger.info("Processing record number: {}. Extracted value: '{}'.", recordCounter, value);
-                final List<Map<String, List<String>>> res = search(dstColumn, value, SearchRepo.FilterType.EQUALS, enrichmentMethod, List.of(joinOn), maxDepth, 0, 1);
-                if (!res.isEmpty()){
-                    final Map<String, List<String>> result = res.getFirst();
-                    final List<String> sortedRecord = new ArrayList<>(headerMap.size());
-                    for (int i = 0; i < headerMap.size(); i++) {
-                        sortedRecord.add("");
-                    }
-                    result.remove("_id");
-                    for(final Map.Entry<String, List<String>> e : result.entrySet()){
-                        final List<String> val = e.getValue();
-                        if (val.isEmpty()){
-                            sortedRecord.set(headerMap.get(e.getKey()), "");
-                        }else if (val.size() == 1){
-                            sortedRecord.set(headerMap.get(e.getKey()), val.getFirst());
-                        }else{
-                            sortedRecord.set(headerMap.get(e.getKey()), JSON.toJson(e.getValue()));
-                        }
-                    }
-                    printer.printRecord(sortedRecord);
-                }
-            }
-        }catch (final Throwable cause){
+        final CSVPrinter printer;
+        try {
+            printer = new CSVPrinter(fw, csvFormat);
+        } catch (final Throwable cause) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to write csv", cause);
-        } finally {
-            try {
-                fw.close();
-            }catch (final Throwable cause){
-                logger.error("Failed to close file writer", cause);
-            }
         }
 
+        for (final CSVRecord record : csvParser) {
+            recordCounter++;
+            final String value = transformSourceColumn(record.get(srcColumnName), srcColumn);
+            final List<Map<String, List<String>>> res = search(dstColumn, value, SearchRepo.FilterType.EQUALS, enrichmentMethod, joinOn, maxDepth, 0, 1);
+            if (!res.isEmpty()) {
+                final Map<String, List<String>> result = res.getFirst();
+                final List<String> sortedRecord = new ArrayList<>(headerMap.size());
+                for (int i = 0; i < headerMap.size(); i++) {
+                    sortedRecord.add("");
+                }
+                result.remove("_id");
+                for (final Map.Entry<String, List<String>> e : result.entrySet()) {
+                    final List<String> val = e.getValue();
+                    if (val.isEmpty()) {
+                        sortedRecord.set(headerMap.get(e.getKey()), "");
+                    } else if (val.size() == 1) {
+                        sortedRecord.set(headerMap.get(e.getKey()), val.getFirst());
+                    } else {
+                        sortedRecord.set(headerMap.get(e.getKey()), JSON.toJson(e.getValue()));
+                    }
+                }
+                try {
+                    printer.printRecord(sortedRecord);
+                    logger.info("Processed record number: {}. Added record: {}", recordCounter, JSON.toJson(sortedRecord));
+                } catch (final Throwable cause) {
+                    logger.error("Failed to add record: {}", JSON.toJson(sortedRecord), cause);
+                }
+            } else {
+                logger.info("Processed record number: {}. No search results", recordCounter);
+            }
+        }
         try {
-            return ResponseEntity.ok()
-                    .contentLength(file.length())
-                    .header("Content-Type", "text/csv", "charset=utf-8")
-                    .body(new InputStreamResource(new FileInputStream(resultFile)));
-        } catch (FileNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to open result csv", e);
+            printer.close(true);
+        }catch (final Throwable cause){
+            logger.error("Failed to close file printer", cause);
+        }
+        try {
+            fw.close();
+        } catch (final Throwable cause) {
+            logger.error("Failed to close file writer", cause);
+        }
+        file.delete();
+
+        try {
+            return Files.readString(resultFile.toPath());
+        }catch (final Throwable cause){
+            logger.error("Failed to read result file.", cause);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to read result file.", cause);
+        }finally {
+            resultFile.delete();
         }
     }
     //======================

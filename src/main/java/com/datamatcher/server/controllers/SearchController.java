@@ -4,13 +4,18 @@ import com.datamatcher.server.entities.DataType;
 import com.datamatcher.server.repositories.RecordsRepo;
 import com.datamatcher.server.repositories.SearchRepo;
 import com.datamatcher.server.services.SearchService;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,16 +40,16 @@ public class SearchController {
         return service.search(recordType, filter, filterType, enrichmentMethod, joinOn, maxDepth, skip, limit);
     }
 
-    @PostMapping(value = "/matchFile", produces = "text/csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/matchFile", produces = MediaType.TEXT_PLAIN_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public final ResponseEntity<Resource> matchFile(@RequestParam("file") final MultipartFile file,
+    public final String matchFile(@RequestParam("file") final MultipartFile file,
                                                     @RequestParam("srcColumn") final String srcColumn,
                                                     @RequestParam("dstColumn") final String dstColumn,
                                                     @RequestParam(value = "enrichmentMethod", defaultValue = "SHALLOW") final SearchRepo.EnrichmentMethod enrichmentMethod,
-                                                    @RequestParam("joinOn") final String joinOn,
+                                                    @RequestParam("joinOn") final List<String> joinOn,
                                                     @RequestParam(value = "maxDepth", defaultValue = "10") final int maxDepth,
                                                     @RequestParam(value = "type", defaultValue = "DEFAULT_CSV") final DataType type,
-                                                    @RequestParam(value = "withHeader", defaultValue = "true") final boolean withHeader){
+                                                    @RequestParam(value = "withHeader", defaultValue = "true") final boolean withHeader) throws IOException {
         return service.matchFile(file, srcColumn, dstColumn, enrichmentMethod, joinOn, maxDepth, type, withHeader);
     }
 
